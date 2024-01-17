@@ -1,0 +1,13 @@
+spring:
+  config:
+    activate:
+      on-profile: local
+
+  datasource:
+    url: jdbc:mysql://localhost:3307/sulsul
+    username: root
+    password: mysql
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
