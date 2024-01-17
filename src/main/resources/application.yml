@@ -2,3 +2,12 @@ spring:
   profiles:
     active: local
     include: db
+
+management:
+  endpoint:
+    health:
+      show-components: always
+  endpoints:
+    web:
+      exposure:
+        include: health
