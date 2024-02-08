@@ -1,4 +1,4 @@
-CREATE TABLE beverage_record
+CREATE TABLE record_beverage
 (
     id          BIGINT AUTO_INCREMENT NOT NULL PRIMARY KEY,
     record_id   BIGINT                NOT NULL,

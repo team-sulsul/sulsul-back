@@ -6,7 +6,7 @@ import main.sulsul.global.domain.BaseEntity;
 
 @Getter
 @Entity
-public class BeverageRecord extends BaseEntity {
+public class RecordBeverage extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
