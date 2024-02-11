@@ -6,5 +6,5 @@ CREATE TABLE member
     created_at DATETIME DEFAULT NOW(),
     updated_at DATETIME,
 
-    CONSTRAINT idx_username UNIQUE (username)
+    CONSTRAINT idx__username UNIQUE (username)
 );

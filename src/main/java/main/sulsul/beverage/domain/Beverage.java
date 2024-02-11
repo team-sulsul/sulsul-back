@@ -1,4 +1,4 @@
-package main.sulsul.beverage;
+package main.sulsul.beverage.domain;
 
 
 import jakarta.persistence.*;

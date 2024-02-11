@@ -1,4 +1,4 @@
-package main.sulsul.beverage;
+package main.sulsul.beverage.domain;
 
 import java.util.*;
 import java.util.stream.Collectors;

@@ -2,6 +2,8 @@ spring:
   profiles:
     active: local
     include: db
+  jpa:
+    open-in-view: false
 
 management:
   endpoint:

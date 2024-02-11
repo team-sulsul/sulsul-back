@@ -1,13 +1,16 @@
-package main.sulsul.beverage;
+package main.sulsul.beverage.domain;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import main.sulsul.global.domain.BaseEntity;
-import main.sulsul.member.Member;
+import main.sulsul.member.domain.Member;
 
 import java.time.LocalDate;
 
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class Record extends BaseEntity {
 
@@ -20,4 +23,9 @@ public class Record extends BaseEntity {
     private Member member;
 
     private LocalDate recordedAt;
+
+    public Record(Member member, LocalDate recordedAt) {
+        this.member = member;
+        this.recordedAt = recordedAt;
+    }
 }
