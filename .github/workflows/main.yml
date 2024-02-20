@@ -64,6 +64,6 @@ jobs:
         --application-name sulsul \
         --deployment-group-name sulsul-group \
         --file-exists-behavior OVERWRITE \
-        --s3-location bucket=sulsul-s3-deploy,bundleType=zip,key=sulsul.zip \ 
+        --s3-location bucket=sulsul-s3-deploy,bundleType=zip,key=sulsul.zip \
         --region ap-northeast-2
       
