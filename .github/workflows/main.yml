@@ -7,7 +7,7 @@ on:
     branches: [develop]
 
 env:
-  S3_BUCKETT_NAME: sulsul-s3-deploy
+  S3_BUCKET_NAME: sulsul-s3-deploy
 
 jobs:
   build:
