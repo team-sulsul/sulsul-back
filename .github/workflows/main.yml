@@ -40,6 +40,9 @@ jobs:
     - name: Copy appspec.yml
       run: cp appspec.yml ./deploy
 
+    - name: Copy script
+      run: cp ./scripts/*.sh ./deploy
+
     - name: Make zip file
       run: zip -r ./sulsul.zip ./deploy
       shell: bash
