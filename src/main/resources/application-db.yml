@@ -11,3 +11,18 @@ spring:
   jpa:
     hibernate:
       ddl-auto: validate
+
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
+
+  datasource:
+    url: ${SULSUL_DB_URL}
+    username: ${SULSUL_DB_USERNAME}
+    password: ${SULSUL_DB_PASSWORD}
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
