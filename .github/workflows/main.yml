@@ -2,9 +2,9 @@ name: sulsul server CI/CD
 
 on:
   push:
-    branches: [develop]
+    branches: [main]
   pull_request:
-    branches: [develop]
+    branches: [main]
 
 env:
   S3_BUCKET_NAME: sulsul-s3-deploy
