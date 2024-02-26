@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
-REPOSITORY=/home/ec2-user/app
+REPOSITORY=/home/ec2-user/app-dev
 
 echo "> 현재 구동 중인 애플리케이션 pid 확인"
 
-CURRENT_PID=$(pgrep -fla java | grep sulsul.*prod | awk '{print $1}')
+CURRENT_PID=$(pgrep -fla java | grep sulsul.*dev | awk '{print $1}')
 
 echo "현재 구동 중인 애플리케이션 pid: $CURRENT_PID"
 
@@ -28,5 +28,5 @@ chmod +x $JAR_NAME
 
 echo "> $JAR_NAME 실행"
 
-source ~/.bashrc
-nohup java -jar -Duser.timezone=Asia/Seoul $JAR_NAME --spring.profiles.active=prod >> $REPOSITORY/nohup.out 2>&1 &
+source ~/.bash-dev
+nohup java -jar -Duser.timezone=Asia/Seoul $JAR_NAME --spring.profiles.active=dev >> $REPOSITORY/nohup.out 2>&1 &

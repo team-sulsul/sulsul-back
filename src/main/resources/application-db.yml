@@ -16,7 +16,7 @@ spring:
 spring:
   config:
     activate:
-      on-profile: prod
+      on-profile: dev, prod
 
   datasource:
     url: ${SULSUL_DB_URL}
