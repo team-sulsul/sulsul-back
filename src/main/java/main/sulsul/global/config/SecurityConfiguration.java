@@ -19,8 +19,9 @@ public class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        return http.
-            securityMatcher("/admin/**")
+        return http
+            .csrf(configurer -> configurer.ignoringRequestMatchers("/admin/**"))
+            .securityMatcher("/admin/**")
             .authorizeHttpRequests(auth -> {
                 auth.requestMatchers("/admin/login").permitAll();
                 auth.anyRequest().authenticated();
