@@ -13,3 +13,9 @@ management:
     web:
       exposure:
         include: health
+
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG
