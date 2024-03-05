@@ -2,7 +2,9 @@ package main.sulsul.beverage.domain;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import lombok.Getter;
 
+@Getter
 public enum Category {
     ROOT("카테고리", null),
         BEER("맥주", ROOT),

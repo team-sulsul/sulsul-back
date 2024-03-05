@@ -3,36 +3,18 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{common/layouts/defaultLayout}"
-      layout:fragment="Content"
->
-<head>
-    <title>술술 관리자 로그인</title>
-
-    <!-- inline CSS 영역-->
-    <style th:inline="css" type="text/css">
-        body {
-            margin: 30px;
-            border: 1px solid red;
-        }
-    </style>
-
-    <!-- inline JS 영역-->
-    <script th:inline="javascript" type="text/javascript">
-      $(document).ready(() => {
-        alert("페이지가 시작됩니다.")
-      });
-    </script>
-</head>
-
-<body>
-<div>
-    <h1>로그인 영역입니다.</h1>
-    <form action="/admin/login" method="post">
-        <input type="text" name="username" placeholder="ID" required autofocus/>
-        <input type="password" name="password" placeholder="PASSWORD" required/>
-        <input type="submit" value="LOGIN">
-    </form>
-</div>
-</body>
+      layout:decorate="~{common/layouts/loginLayout}">
+<th:block layout:fragment="Content">
+    <div class="login-layout">
+        <div>
+            <img src="" th:src="@{/images/logo.png}" alt="">
+            <h1>SULSUL ADMIN</h1>
+            <form action="/admin/login" method="post">
+                <input type="text" name="username" placeholder="ID" required autofocus/>
+                <input type="password" name="password" placeholder="PASSWORD" required/>
+                <input type="submit" value="LOGIN">
+            </form>
+        </div>
+    </div>
+</th:block>
 </html>

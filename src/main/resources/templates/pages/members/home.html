@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<!-- Default Layout Import-->
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layouts/defaultLayout}">
+
+<th:block layout:fragment="Content">
+    <section class="panel important">
+        <h2>회원 목록</h2>
+        <form action="" method="get">
+            <label>
+                <input type="text" name="search" placeholder="검색어를 입력해주세요.">
+            </label>
+            <input type="submit" value="검색">
+        </form>
+    </section>
+    <section class="panel important">
+        <h2>회원 목록</h2>
+        <table>
+            <thead>
+                <tr>
+                    <td>NO.</td>
+                    <td>이름</td>
+                    <td>가입일</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="member: ${members}">
+                    <td th:text="${member.id}"></td>
+                    <td><a href="" th:href="@{/admin/members/{id}(id=${member.id})}" th:text="${member.username}"></a></td>
+                    <td th:text="${member.createdAt}"></td>
+                    <td><a href="" th:href="@{/admin/members/{id}(id=${member.id})}">상세</a></td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+</th:block>
+</html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<!-- Default Layout Import-->
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layouts/defaultLayout}">
+
+<th:block layout:fragment="Content">
+    <section class="panel important">
+        <h2>회원 상세</h2>
+        <div th:text="${member.id}"></div>
+        <div th:text="${member.username}"></div>
+    </section>
+
+    <section class="panel important">
+        <h2>음주 기록</h2>
+        <div class="record">
+            <table>
+                <thead>
+                <tr>
+                    <td>기록 날짜</td>
+                    <td>취함 레벨</td>
+                    <td>입력 날짜</td>
+                    <td></td>
+                </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+
+            <div class="page">
+            </div>
+        </div>
+        <dialog>
+            <div><strong>기록 상세</strong></div>
+            <form action="" method="dialog" class="record-detail-dialog">
+
+            </form>
+        </dialog>
+    </section>
+</th:block>
+
+<th:block layout:fragment="Script">
+    <script th:inline="javascript">
+      const memberId = [[${member.id}]];
+      let defaultSize = 10;
+    </script>
+
+    <script>
+      function getRecordDetail(recordId) {
+        console.log("getRecordDetail: " + recordId);
+        $.ajax({
+          type: "get",
+          url: `/admin/records/${recordId}`,
+          headers: {
+            "Content-Type": "application/json"
+          },
+          success: (response) => {
+            $(".record-detail-dialog").empty();
+            console.log(response);
+          }
+        })
+      }
+
+      function getRecord(page, size) {
+        $(".record tbody").empty();
+        $(".page").empty();
+        $.ajax({
+          type: "get",
+          url: `/admin/members/${memberId}/records`,
+          data: {
+            page: page,
+            size: size
+          },
+          headers: {
+            "Content-Type": "application/json"
+          },
+          success: (response) => {
+            response.result.forEach(record => {
+              const tr = `<tr>
+                                <td>${record.recordedAt}</td>
+                                <td>${record.hangoverLevel}</td>
+                                <td>${record.createdAt}</td>
+                                <td><button class="record-detail" data-record="${record.recordId}">상세보기</button></td>
+                            </tr>`;
+              $(".record tbody").append(tr);
+            });
+
+            $(".record-detail").on("click", (event) => {
+              const recordId = $(event.currentTarget).data("record");
+              console.log(recordId);
+              getRecordDetail(recordId);
+            });
+
+            for (let i = 1; i <= response.endPage; i++) {
+              const button = `<button class="page-button" data-page="${i}">${i}</button>`
+              $(".page").append(button);
+            }
+
+            $(".page-button").on("click", function(event) {
+              console.log(event);
+              const page = $(this).data("page");
+              console.log(page);
+
+              getRecord(page, defaultSize);
+            });
+          },
+          error: (request, status, error) => {
+            alert("음주 기록을 갖고 올 수 없습니다.")
+          }
+        });
+      }
+
+      $(document).ready(() => {
+        getRecord(1, defaultSize);
+      });
+    </script>
+</th:block>
+</html>

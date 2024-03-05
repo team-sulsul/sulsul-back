@@ -2,8 +2,26 @@
 <!-- Thymeleaf 선언 / headerFragment 임을 선언-->
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
-      th:fragment="HeaderFragment">
-<div style="border: solid 1px yellow">
-  <h1>Header 영역입니다.</h1>
-</div>
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<header th:fragment="HeaderFragment" role="banner">
+  <img src="" th:src="@{/images/logo.png}" class="logo" alt="">
+  <h1><a href="" th:href="@{/admin/home}">SULSUL ADMIN</a></h1>
+  <ul class="utilities">
+    <li class="users"><a href="#" th:text="|${#authentication.principal} 님|">My Account</a></li>
+    <th:block sec:authorize="isAnonymous()">
+      <!-- 인증 받지 않음 -->
+      <li class="login success"><a href="/admin/login" class="icons me-2 ms-2">로그인</a></li>
+    </th:block>
+
+    <th:block sec:authorize="isAuthenticated()">
+      <!-- 인증 받음 -->
+      <li class="logout warn">
+        <form action="" th:action="@{/admin/logout}" method="post">
+          <button class="icons me-2 ms-2">로그아웃</button>
+        </form>
+      </li>
+    </th:block>
+  </ul>
+</header>
 </html>

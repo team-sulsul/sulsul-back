@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<!-- Default Layout Import-->
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layouts/loginLayout}">
+<th:block layout:fragment="Content">
+    <div class="error-layout">
+        <div>
+            <img src="" th:src="@{/images/error.png}" alt="">
+            <h1>에러 발생!</h1>
+            <a href="" th:href="@{/admin/login}">로그인하기</a>
+        </div>
+    </div>
+</th:block>
+</html>

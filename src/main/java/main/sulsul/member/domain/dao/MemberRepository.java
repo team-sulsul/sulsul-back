@@ -1,5 +1,6 @@
 package main.sulsul.member.domain.dao;
 
+import java.util.List;
 import main.sulsul.member.domain.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 

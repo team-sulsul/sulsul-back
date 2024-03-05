@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<!-- Thymeleaf 선언 / FooterFragment 임을 선언-->
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<nav role="navigation" th:fragment="NavFragment">
+    <ul class="main">
+        <li class="users"><a href="" th:href="@{/admin/members}">회원 관리</a></li>
+        <li class="beers"><a href="" th:href="@{/admin/beverages}">주류 관리</a></li>
+        <li class="admins"><a href="" th:href="@{/admin/admins}">관리자 관리</a></li>
+<!--        <li class="dashboard"><a href="#">Dashboard</a></li>-->
+<!--        <li class="write"><a href="#">Write Post</a></li>-->
+<!--        <li class="edit"><a href="#">Edit Posts</a></li>-->
+<!--        <li class="comments"><a href="#">Comments</a></li>-->
+    </ul>
+</nav>
+</html>

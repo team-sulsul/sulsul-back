@@ -19,3 +19,15 @@ logging:
     org:
       springframework:
         security: DEBUG
+
+---
+spring:
+  config:
+    activate:
+      on-profile: local
+
+  devtools:
+    restart:
+      enabled: true
+  thymeleaf:
+    cache: true

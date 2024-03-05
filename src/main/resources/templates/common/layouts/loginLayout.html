@@ -10,18 +10,13 @@
 </head>
 
 <body>
-<!--Header 영역을 참조합니다.-->
-<header th:replace="~{common/fragments/header :: HeaderFragment}"></header>
-
-<nav th:replace="~{common/fragments/nav :: NavFragment}"></nav>
-
 <!--Content 내용 영역을 참조합니다-->
-<main role="main">
+
+<main>
 <th:block layout:fragment="Content">
 </th:block>
 </main>
 <!--Footer 영역을 참조합니다.-->
 <footer th:replace="~{common/fragments/footer :: FooterFragment}"></footer>
-<th:block layout:fragment="Script"></th:block>
 </body>
 </html>
