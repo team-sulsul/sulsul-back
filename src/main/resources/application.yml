@@ -13,3 +13,21 @@ management:
     web:
       exposure:
         include: health
+
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG
+
+---
+spring:
+  config:
+    activate:
+      on-profile: local
+
+  devtools:
+    restart:
+      enabled: true
+  thymeleaf:
+    cache: true

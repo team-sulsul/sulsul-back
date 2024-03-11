@@ -12,13 +12,9 @@ public class RecordBeverage extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "record_id")
-    private Record record;
+    private Long recordId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "beverage_id")
-    private Beverage beverage;
+    private Long beverageId;
 
     private Integer count; // 몇 잔
 }

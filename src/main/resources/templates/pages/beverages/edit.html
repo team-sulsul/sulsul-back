@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<!-- Default Layout Import-->
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layouts/defaultLayout}">
+
+<th:block layout:fragment="Content">
+    <section class="panel important">
+        <h2>주류 상세</h2>
+        <div class="detail-content">
+            <form action="" method="post" th:object="${beverage}">
+                <input type="text" name="name" th:field="*{name}" placeholder="이름"/>
+                <input type="number" name="capacity" th:field="*{capacity}" placeholder="용량"/>
+
+                <span th:each="category : ${beverage.category.values()}">
+                    <input type="radio" th:name="category" th:value="${category.name}" th:checked="${category == beverage.category}">
+                    <label th:text="${category.title}"></label>
+                </span>
+                <input type="submit" value="저장">
+            </form>
+        </div>
+    </section>
+</th:block>
+</html>

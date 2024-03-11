@@ -18,14 +18,17 @@ public class Record extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
-    private Member member;
+    private Long memberId;
+
+    @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "varchar(255)")
+    private HangoverLevel hangoverLevel;
 
     private LocalDate recordedAt;
 
-    public Record(Member member, LocalDate recordedAt) {
-        this.member = member;
+    public Record(Long memberId, HangoverLevel hangoverLevel, LocalDate recordedAt) {
+        this.memberId = memberId;
+        this.hangoverLevel = hangoverLevel;
         this.recordedAt = recordedAt;
     }
 }
