@@ -41,6 +41,9 @@ dependencies {
     implementation 'org.flywaydb:flyway-core'
     implementation 'org.flywaydb:flyway-mysql'
 
+    implementation 'com.auth0:java-jwt:3.18.1'
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     runtimeOnly 'com.mysql:mysql-connector-j'
