@@ -1,0 +1,21 @@
+spring:
+  datasource:
+    url: jdbc:tc:mysql:8://sulsul
+    username: root
+    password: test
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+        dialect: org.hibernate.dialect.MySQLDialect
+    open-in-view: false
+
+  flyway:
+    enabled: true
+    url: jdbc:tc:mysql:8://sulsul
+    user: root
+    password: test
