@@ -1,9 +1,9 @@
-package main.sulsul.authentication.controller;
+package main.sulsul.oauth.ui;
 
 import lombok.RequiredArgsConstructor;
-import main.sulsul.authentication.domain.AuthTokens;
-import main.sulsul.authentication.infra.kakao.KakaoLoginParams;
-import main.sulsul.authentication.service.OAuthLoginService;
+import main.sulsul.oauth.application.OAuthLoginService;
+import main.sulsul.oauth.domain.generator.AuthTokens;
+import main.sulsul.oauth.domain.kakao.KakaoLoginParams;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

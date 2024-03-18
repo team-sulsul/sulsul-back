@@ -1,4 +1,4 @@
-package main.sulsul.authentication.infra;
+package main.sulsul.oauth.domain.generator;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;

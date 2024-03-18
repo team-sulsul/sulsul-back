@@ -1,4 +1,4 @@
-package main.sulsul.authentication.domain;
+package main.sulsul.oauth.domain.generator;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

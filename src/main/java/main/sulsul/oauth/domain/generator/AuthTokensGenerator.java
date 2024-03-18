@@ -1,7 +1,8 @@
-package main.sulsul.authentication.domain;
+package main.sulsul.oauth.domain.generator;
 
 import lombok.RequiredArgsConstructor;
-import main.sulsul.authentication.infra.JwtTokenProvider;
+import main.sulsul.member.domain.Member;
+import main.sulsul.member.domain.dao.MemberRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;

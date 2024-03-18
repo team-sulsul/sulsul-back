@@ -1,9 +1,9 @@
-package main.sulsul.authentication.infra.kakao;
+package main.sulsul.oauth.domain.kakao;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import main.sulsul.authentication.domain.oauth.OAuthLoginParams;
-import main.sulsul.authentication.domain.oauth.OAuthProvider;
+import main.sulsul.oauth.domain.oauth.OAuthLoginParams;
+import main.sulsul.oauth.domain.oauth.OAuthProvider;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 

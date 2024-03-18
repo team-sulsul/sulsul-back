@@ -1,10 +1,10 @@
-package main.sulsul.authentication.infra.kakao;
+package main.sulsul.oauth.domain.kakao;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
-import main.sulsul.authentication.domain.oauth.OAuthInfoResponse;
-import main.sulsul.authentication.domain.oauth.OAuthProvider;
+import main.sulsul.oauth.domain.oauth.OAuthInfoResponse;
+import main.sulsul.oauth.domain.oauth.OAuthProvider;
 
 @Getter
 @JsonIgnoreProperties(ignoreUnknown = true)

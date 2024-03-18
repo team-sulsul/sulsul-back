@@ -1,4 +1,4 @@
-package main.sulsul.authentication.infra.kakao;
+package main.sulsul.oauth.domain.kakao;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;

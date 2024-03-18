@@ -1,13 +1,13 @@
-package main.sulsul.authentication.service;
+package main.sulsul.oauth.application;
 
 import lombok.RequiredArgsConstructor;
-import main.sulsul.authentication.domain.AuthTokens;
-import main.sulsul.authentication.domain.AuthTokensGenerator;
-import main.sulsul.authentication.domain.Member;
-import main.sulsul.authentication.domain.MemberRepository;
-import main.sulsul.authentication.domain.oauth.OAuthInfoResponse;
-import main.sulsul.authentication.domain.oauth.OAuthLoginParams;
-import main.sulsul.authentication.domain.oauth.RequestOAuthInfoService;
+import main.sulsul.member.domain.Member;
+import main.sulsul.member.domain.dao.MemberRepository;
+import main.sulsul.oauth.domain.generator.AuthTokens;
+import main.sulsul.oauth.domain.generator.AuthTokensGenerator;
+import main.sulsul.oauth.domain.oauth.OAuthInfoResponse;
+import main.sulsul.oauth.domain.oauth.OAuthLoginParams;
+import main.sulsul.oauth.domain.oauth.RequestOAuthInfoService;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -32,8 +32,7 @@ public class OAuthLoginService {
     private Long newMember(OAuthInfoResponse oAuthInfoResponse) {
         Member member = Member.builder()
                 .email(oAuthInfoResponse.getEmail())
-                .nickname(oAuthInfoResponse.getNickname())
-                .oAuthProvider(oAuthInfoResponse.getOAuthProvider())
+                .username(oAuthInfoResponse.getNickname())
                 .build();
         return memberRepository.save(member).getId();
     }

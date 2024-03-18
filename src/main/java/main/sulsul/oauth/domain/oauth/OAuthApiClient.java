@@ -1,4 +1,4 @@
-package main.sulsul.authentication.domain.oauth;
+package main.sulsul.oauth.domain.oauth;
 
 public interface OAuthApiClient {
     OAuthProvider oAuthProvider();

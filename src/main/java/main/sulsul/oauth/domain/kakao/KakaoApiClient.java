@@ -1,10 +1,10 @@
-package main.sulsul.authentication.infra.kakao;
+package main.sulsul.oauth.domain.kakao;
 
 import lombok.RequiredArgsConstructor;
-import main.sulsul.authentication.domain.oauth.OAuthApiClient;
-import main.sulsul.authentication.domain.oauth.OAuthInfoResponse;
-import main.sulsul.authentication.domain.oauth.OAuthLoginParams;
-import main.sulsul.authentication.domain.oauth.OAuthProvider;
+import main.sulsul.oauth.domain.oauth.OAuthApiClient;
+import main.sulsul.oauth.domain.oauth.OAuthInfoResponse;
+import main.sulsul.oauth.domain.oauth.OAuthLoginParams;
+import main.sulsul.oauth.domain.oauth.OAuthProvider;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
