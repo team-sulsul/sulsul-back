@@ -26,19 +26,16 @@
             <thead>
             <tr>
                 <td>NO.</td>
-                <td>카테고리</td>
                 <td>이름</td>
                 <td>용량(ml)</td>
             </tr>
             </thead>
             <tbody>
-            <tr th:each="beverage: ${beverages}">
-                <td th:text="${beverage.id}"></td>
-                <td th:text="${beverage.category.title}"></td>
-                <td><a href="" th:href="@{/admin/beverages/{id}(id=${beverage.id})}" th:text="${beverage.name}"></a>
-                </td>
+            <tr th:each="beverage, state: ${beverages}">
+                <td th:text="${state.count}"></td>
+                <td><a href="" th:href="@{/admin/beverages/{id}(id=${beverage.name})}" th:text="${beverage.korean}"></a></td>
                 <td th:text="|${beverage.capacity}ml|">ml</td>
-                <td><a href="" th:href="@{/admin/beverages/{id}(id=${beverage.id})}">상세</a></td>
+                <td><a href="" th:href="@{/admin/beverages/{id}(id=${beverage.name})}">상세</a></td>
             </tr>
             </tbody>
         </table>

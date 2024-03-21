@@ -1,11 +1,10 @@
-package main.sulsul.beverage.domain;
+package main.sulsul.record.domain;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import main.sulsul.global.domain.BaseEntity;
-import main.sulsul.member.domain.Member;
 
 import java.time.LocalDate;
 

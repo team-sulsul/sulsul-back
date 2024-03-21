@@ -1,20 +1,21 @@
 package main.sulsul.admin.application;
 
-import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import main.sulsul.admin.dto.PageRequest;
 import main.sulsul.admin.dto.PageResultDto;
 import main.sulsul.admin.dto.RecordResponse;
-import main.sulsul.beverage.domain.Record;
-import main.sulsul.beverage.domain.dao.RecordRepository;
 import main.sulsul.member.domain.Member;
 import main.sulsul.member.domain.dao.MemberRepository;
+import main.sulsul.record.domain.Record;
+import main.sulsul.record.domain.dao.RecordRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor

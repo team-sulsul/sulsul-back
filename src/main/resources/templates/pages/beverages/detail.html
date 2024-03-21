@@ -9,20 +9,15 @@
         <h2>주류 상세</h2>
         <div class="detail-content">
             <div>
-                <span>NO.</span><span th:text="${beverage.id}"></span>
-            </div>
-            <div>
-                <span>이름</span><span th:text="${beverage.name}"></span>
+                <span>이름</span><span th:text="${beverage.korean}"></span>
             </div>
             <div>
                 <span>용량(ml)</span><span th:text="${beverage.capacity}"></span>
             </div>
             <div>
-                <span>카테고리</span><span th:text="${beverage.category.title}"></span>
+                <span>한 병 당 잔 수</span><span th:text="${beverage.drinkPerBottle}"></span>
             </div>
         </div>
-
-        <a href="" th:href="@{/admin/beverages/{id}/edit(id=${beverage.id})}" th:text="수정">수정</a>
     </section>
 </th:block>
 </html>
