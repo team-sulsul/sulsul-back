@@ -1,4 +1,4 @@
-package main.sulsul.beverage.domain;
+package main.sulsul.record.domain;
 
 import lombok.Getter;
 

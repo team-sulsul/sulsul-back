@@ -1,8 +1,9 @@
-package main.sulsul.beverage.domain.dao;
+package main.sulsul.record.domain.dao;
+
+import main.sulsul.record.domain.RecordBeverage;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
-import main.sulsul.beverage.domain.RecordBeverage;
-import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface RecordBeverageRepository extends JpaRepository<RecordBeverage, Long> {
 

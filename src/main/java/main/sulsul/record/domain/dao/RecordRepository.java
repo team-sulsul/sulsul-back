@@ -1,6 +1,6 @@
-package main.sulsul.beverage.domain.dao;
+package main.sulsul.record.domain.dao;
 
-import main.sulsul.beverage.domain.Record;
+import main.sulsul.record.domain.Record;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

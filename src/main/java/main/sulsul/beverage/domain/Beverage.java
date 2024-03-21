@@ -1,30 +1,29 @@
 package main.sulsul.beverage.domain;
 
-
-import jakarta.persistence.*;
 import lombok.Getter;
-import main.sulsul.admin.dto.BeverageEditForm;
-import main.sulsul.global.domain.BaseEntity;
 
 @Getter
-@Entity
-public class Beverage extends BaseEntity {
+public enum Beverage {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    SOJU("소주", 360, 7),
+    BEER("맥주", 500, 3),
+    SOJU_BEER("소맥", null, null),
+    WINE("와인", 750, 5),
+    RICE_WINE("막걸리", 750, 5),
+    COCKTAIL("칵테일", null, null),
+    WHISKY("위스키", null, null),
+    VODKA("보드카", 750, 25),
+    SAKE("사케", 300, 7);
 
-    private String name;
+    private final String korean;
 
-    private Integer capacity;
+    private final Integer capacity;
 
-    @Column(columnDefinition = "VARCHAR(255)")
-    @Enumerated(EnumType.STRING)
-    private Category category;
+    private final Integer drinkPerBottle;
 
-    public void update(BeverageEditForm editForm) {
-        this.name = editForm.getName();
-        this.capacity = editForm.getCapacity();
-        this.category = editForm.getCategory();
+    Beverage(String korean, Integer capacity, Integer drinkPerBottle) {
+        this.korean = korean;
+        this.capacity = capacity;
+        this.drinkPerBottle = drinkPerBottle;
     }
 }
