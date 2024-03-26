@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import main.sulsul.authentication.domain.Member;
 import main.sulsul.global.domain.BaseEntity;
 
 import java.time.LocalDate;

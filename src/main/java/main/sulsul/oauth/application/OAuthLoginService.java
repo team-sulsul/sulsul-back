@@ -1,6 +1,7 @@
 package main.sulsul.oauth.application;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import main.sulsul.member.domain.Member;
 import main.sulsul.member.domain.dao.MemberRepository;
 import main.sulsul.oauth.domain.generator.AuthTokens;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class OAuthLoginService {
     private final MemberRepository memberRepository;
     private final AuthTokensGenerator authTokensGenerator;
@@ -20,6 +22,7 @@ public class OAuthLoginService {
     public AuthTokens login(OAuthLoginParams params) {
         OAuthInfoResponse oAuthInfoResponse = requestOAuthInfoService.request(params);
         Long memberId = findOrCreateMember(oAuthInfoResponse);
+        log.info("memberID : {}", memberId);
         return authTokensGenerator.generate(memberId);
     }
 

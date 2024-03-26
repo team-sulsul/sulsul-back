@@ -6,8 +6,8 @@ spring:
       - jwt
   oauth:
     kakao:
-      secret:
-      client-id:
+      secret: YmkpW6daM1UdRVPcLUx979MAaFNiIVt5
+      client-id: e0df3d8e0617f4bba3f0c3c909eef6ea
       url:
         auth: https://kauth.kakao.com
         api: https://kapi.kakao.com
