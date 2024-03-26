@@ -1,0 +1,15 @@
+spring:
+  config:
+    activate:
+      on-profile: local
+
+jwt:
+  secretKey: testSecretKey20230327testSecretKey20230327testSecretKey202303271221122121212122121212112212121221212112211212121212121221
+
+  access:
+    expiration: 360000  # 1시간
+    header: Authorization
+
+  refresh:
+    expiration: 1209600000 # 2주
+    header: Authorization-refresh
