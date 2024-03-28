@@ -3,6 +3,7 @@ package main.sulsul.oauth.application;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import main.sulsul.member.domain.Member;
+import main.sulsul.member.domain.Role;
 import main.sulsul.member.domain.dao.MemberRepository;
 import main.sulsul.oauth.domain.generator.AuthTokens;
 import main.sulsul.oauth.domain.generator.AuthTokensGenerator;
@@ -36,6 +37,8 @@ public class OAuthLoginService {
         Member member = Member.builder()
                 .email(oAuthInfoResponse.getEmail())
                 .username(oAuthInfoResponse.getNickname())
+                .role(Role.USER)
+                .password("1111")
                 .build();
         return memberRepository.save(member).getId();
     }
