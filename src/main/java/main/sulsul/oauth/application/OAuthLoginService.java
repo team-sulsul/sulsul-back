@@ -10,6 +10,8 @@ import main.sulsul.oauth.domain.generator.AuthTokensGenerator;
 import main.sulsul.oauth.domain.oauth.OAuthInfoResponse;
 import main.sulsul.oauth.domain.oauth.OAuthLoginParams;
 import main.sulsul.oauth.domain.oauth.RequestOAuthInfoService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -19,6 +21,9 @@ public class OAuthLoginService {
     private final MemberRepository memberRepository;
     private final AuthTokensGenerator authTokensGenerator;
     private final RequestOAuthInfoService requestOAuthInfoService;
+    public final PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
     public AuthTokens login(OAuthLoginParams params) {
         OAuthInfoResponse oAuthInfoResponse = requestOAuthInfoService.request(params);
@@ -38,8 +43,9 @@ public class OAuthLoginService {
                 .email(oAuthInfoResponse.getEmail())
                 .username(oAuthInfoResponse.getNickname())
                 .role(Role.USER)
-                .password("1111")
+                .password(passwordEncoder().encode("1111"))
                 .build();
         return memberRepository.save(member).getId();
     }
+
 }
