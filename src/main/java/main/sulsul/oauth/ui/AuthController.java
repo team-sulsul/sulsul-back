@@ -3,7 +3,9 @@ package main.sulsul.oauth.ui;
 import lombok.RequiredArgsConstructor;
 import main.sulsul.oauth.application.OAuthLoginService;
 import main.sulsul.oauth.domain.generator.AuthTokens;
+import main.sulsul.oauth.domain.generator.AuthTokensDTO;
 import main.sulsul.oauth.domain.kakao.KakaoLoginParams;
+import main.sulsul.oauth.domain.kakao.LoginParams;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,5 +21,10 @@ public class AuthController {
     @PostMapping("/kakao")
     public ResponseEntity<AuthTokens> loginKakao(@RequestBody KakaoLoginParams params) {
         return ResponseEntity.ok(oAuthLoginService.login(params));
+    }
+
+    @PostMapping("/test")
+    public ResponseEntity<AuthTokensDTO> isLogin(@RequestBody LoginParams params) {
+        return ResponseEntity.ok(oAuthLoginService.isLogin(params));
     }
 }
