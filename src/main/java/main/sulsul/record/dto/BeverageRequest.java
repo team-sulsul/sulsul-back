@@ -6,7 +6,7 @@ import main.sulsul.beverage.domain.Beverage;
 @Getter
 public class BeverageRequest {
 
-    private int drink;
+    private int quantity;
 
     private Beverage beverage;
 }

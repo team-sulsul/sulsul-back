@@ -30,4 +30,8 @@ public class Record extends BaseEntity {
         this.drunkenLevel = drunkenLevel;
         this.recordedAt = recordedAt;
     }
+
+    public void changeDrunkenLevel(DrunkenLevel drunkenLevel) {
+        this.drunkenLevel = drunkenLevel;
+    }
 }
