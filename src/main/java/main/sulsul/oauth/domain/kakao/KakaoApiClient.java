@@ -44,7 +44,9 @@ public class KakaoApiClient implements OAuthApiClient {
         String url = authUrl + "/oauth/token";
 
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+//        httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        httpHeaders.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+
         httpHeaders.add("Accept","application/json");
 
         MultiValueMap<String, String> body = params.makeBody();
