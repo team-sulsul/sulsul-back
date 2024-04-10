@@ -2,8 +2,7 @@ package main.sulsul.global.exception;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
-import main.sulsul.global.exception.dto.CustomExceptionResponse;
-import org.springframework.http.ResponseEntity;
+import main.sulsul.global.dto.CommonResponse;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -15,9 +14,9 @@ public class GlobalExceptionHandler {
     private static final String ERROR_LOG_FORMAT_WITH_WRONG_INPUT = "url={}, errorCode={}, errorMessage={}, errorInput={}";
 
     @ExceptionHandler(CommonException.class)
-    public ResponseEntity<CustomExceptionResponse> handleException(final CommonException exception, final HttpServletRequest request) {
+    public CommonResponse<Void> handleException(final CommonException exception, final HttpServletRequest request) {
         trackLog(exception, request);
-        return CustomExceptionResponse.toResponseEntity(exception.getErrorCode());
+        return CommonResponse.businessError(exception);
     }
 
     private void trackLog(final CommonException exception, final HttpServletRequest request) {
