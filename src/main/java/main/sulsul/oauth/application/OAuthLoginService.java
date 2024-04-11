@@ -58,6 +58,7 @@ public class OAuthLoginService {
     }
 
     public AuthTokensDTO isLogin(LoginParams params) {
+        log.info("test");
         AuthTokensDTO authTokensDTO = new AuthTokensDTO();
         String accessToken = params.getAccessToken();
         String refreshToken = params.getRefreshToken();
