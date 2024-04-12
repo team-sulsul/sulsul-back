@@ -10,6 +10,7 @@ import main.sulsul.member.domain.dao.MemberRepository;
 import main.sulsul.oauth.domain.generator.AuthTokens;
 import main.sulsul.oauth.domain.generator.AuthTokensDTO;
 import main.sulsul.oauth.domain.generator.AuthTokensGenerator;
+import main.sulsul.oauth.domain.generator.JwtTokenProvider;
 import main.sulsul.oauth.domain.kakao.LoginParams;
 import main.sulsul.oauth.domain.oauth.OAuthInfoResponse;
 import main.sulsul.oauth.domain.oauth.OAuthLoginParams;
@@ -29,6 +30,7 @@ public class OAuthLoginService {
     private final MemberRepository memberRepository;
     private final AuthTokensGenerator authTokensGenerator;
     private final RequestOAuthInfoService requestOAuthInfoService;
+    private final JwtTokenProvider jwtTokenProvider;
     public final PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
@@ -58,32 +60,13 @@ public class OAuthLoginService {
     }
 
     public AuthTokensDTO isLogin(LoginParams params) {
-        log.info("test");
         AuthTokensDTO authTokensDTO = new AuthTokensDTO();
         String accessToken = params.getAccessToken();
         String refreshToken = params.getRefreshToken();
-        log.info("params : {}",params.getAccessToken());
-        log.info("params : {}",params.getRefreshToken());
-        return isAccessTokenValid(accessToken, authTokensDTO, params);
+        return isAccessTokenValid(accessToken, refreshToken, authTokensDTO, params);
     }
 
-    public AuthTokensDTO isAccessTokenValid(String accessToken,AuthTokensDTO authTokensDTO, LoginParams params) {
-
-//        if (isTokenExpired(accessToken)) {
-//            authTokensDTO.setMessage("200");
-//            authTokensDTO.setAccessToken("-");
-//            authTokensDTO.setRefreshToken("-");
-//            return authTokensDTO;
-//        } else {
-//            // AccessToken이 만료된 경우
-//            System.out.println("AccessToken이 만료되었습니다.");
-//            authTokensDTO.setMessage("600");
-//            AuthTokensDTO authTokens = getUpdateAuthTokens(params);
-//            log.info("authToken : ", authTokens.getAccessToken());
-//            log.info("authToken : ", authTokens.getRefreshToken());
-//            return authTokensDTO;
-//        }
-
+    public AuthTokensDTO isAccessTokenValid(String accessToken, String refreshToken, AuthTokensDTO authTokensDTO, LoginParams params) {
         try {
             isTokenExpired(accessToken);
             authTokensDTO.setMessage("200");
@@ -91,39 +74,18 @@ public class OAuthLoginService {
             authTokensDTO.setRefreshToken("-");
             return authTokensDTO;
         } catch (ExpiredJwtException e) {
-            System.out.println("AccessToken이 만료되었습니다.");
+            if (isTokenExpired(refreshToken)) {
+                authTokensDTO.setMessage("601");
+                return authTokensDTO;
+            }
             authTokensDTO.setMessage("600");
-            AuthTokensDTO authTokens = getUpdateAuthTokens(params);
-            log.info("authToken : ", authTokens.getAccessToken());
-            log.info("authToken : ", authTokens.getRefreshToken());
+            log.info("param : {}", params);
+            String id = jwtTokenProvider.extractSubject(params.getAccessToken());
+            System.out.println("id = " + id);
+            String updateAccessToken = getUpdateAuthTokens(id);
+            authTokensDTO.setAccessToken(updateAccessToken);
             return authTokensDTO;
         }
-
-//        try {
-//            System.out.println("토큰이 정상적입니다.");
-//            isTokenExpired(accessToken);
-//            authTokensDTO.setMessage("200");
-//            authTokensDTO.setAccessToken("-");
-//            authTokensDTO.setRefreshToken("-");
-//            return authTokensDTO;
-//        } catch (ExpiredJwtException e) {
-//            // AccessToken이 만료된 경우
-//            System.out.println("AccessToken이 만료되었습니다.");
-//            authTokensDTO.setMessage("600");
-//            AuthTokens authTokens = getUpdateAuthTokens(params);
-//            log.info("authToken : ", authTokens.getAccessToken());
-//            log.info("authToken : ", authTokens.getRefreshToken());
-//            return authTokensDTO;
-//        } catch (MalformedJwtException | SignatureException e) {
-//            // 유효하지 않은 형식의 토큰 또는 서명 오류가 발생한 경우
-//            System.out.println("유효하지 않은 AccessToken입니다.");
-//            authTokensDTO.setMessage("601");
-//            return authTokensDTO;
-//        } catch (Exception e) {
-//            // 그 외 예외 처리
-//            e.printStackTrace();
-//            return authTokensDTO;
-//        }
     }
 
     public static boolean isTokenExpired(String token) {
@@ -143,9 +105,8 @@ public class OAuthLoginService {
         return authTokensGenerator.generate(memberId);
     }
 
-    private AuthTokensDTO getUpdateAuthTokens(OAuthLoginParams params) {
-        OAuthInfoResponse oAuthInfoResponse = requestOAuthInfoService.request(params);
-        Long memberId = findOrCreateMember(oAuthInfoResponse);
-        return authTokensGenerator.updateToken(memberId);
+    private String getUpdateAuthTokens(String id) {
+        String accessToken = authTokensGenerator.generateAccessToken(Long.valueOf(id));
+        return accessToken;
     }
 }

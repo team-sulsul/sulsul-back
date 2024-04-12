@@ -39,6 +39,13 @@ public class AuthTokensGenerator {
         return AuthTokens.of(accessToken, refreshToken, BEARER_TYPE, ACCESS_TOKEN_EXPIRE_TIME / 1000L, message);
     }
 
+    public String generateAccessToken(Long memberId) {
+        long now = (new Date()).getTime();
+        Date accessTokenExpiredAt = new Date(now + ACCESS_TOKEN_EXPIRE_TIME);
+        String subject = memberId.toString();
+        return jwtTokenProvider.generate(subject, accessTokenExpiredAt);
+    }
+
     public AuthTokensDTO updateToken(Long memberId) {
         AuthTokensDTO authTokensDTO = new AuthTokensDTO();
         long now = (new Date()).getTime();

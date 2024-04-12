@@ -63,7 +63,6 @@ public class JwtTokenProvider {
 
     public static boolean isAccessTokenValid(String accessToken) {
         try {
-            System.out.println("토큰이 정상적입니다.");
             return isTokenExpired(accessToken);
         } catch (ExpiredJwtException e) {
             // AccessToken이 만료된 경우
