@@ -18,6 +18,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
     private final OAuthLoginService oAuthLoginService;
 
+    @PostMapping("/accesstoken/generate")
+    public ResponseEntity<String> accessTokenGenerate(@RequestBody KakaoLoginParams params) {
+        return ResponseEntity.ok(oAuthLoginService.accessTokenGen(params));
+    }
+
     @PostMapping("/kakao")
     public ResponseEntity<AuthTokens> loginKakao(@RequestBody KakaoLoginParams params) {
         return ResponseEntity.ok(oAuthLoginService.login(params));

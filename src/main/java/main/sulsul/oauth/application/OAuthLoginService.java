@@ -37,6 +37,10 @@ public class OAuthLoginService {
 
     private static byte[] decodeKey = Decoders.BASE64.decode("testSecretKey20230327testSecretKey20230327testSecretKey202303271221122121212122121212112212121221212112211212121212121221");
 
+    public String accessTokenGen(OAuthLoginParams params) {
+        return getAccessToken(params);
+    }
+
     public AuthTokens login(OAuthLoginParams params) {
         return getAuthTokens(params);
     }
@@ -99,11 +103,15 @@ public class OAuthLoginService {
         return claims.getExpiration();
     }
 
+    private String getAccessToken(OAuthLoginParams params) {
+        return requestOAuthInfoService.getAccessToken(params);
+    }
     private AuthTokens getAuthTokens(OAuthLoginParams params) {
         OAuthInfoResponse oAuthInfoResponse = requestOAuthInfoService.request(params);
         Long memberId = findOrCreateMember(oAuthInfoResponse);
         return authTokensGenerator.generate(memberId);
     }
+
 
     private String getUpdateAuthTokens(String id) {
         String accessToken = authTokensGenerator.generateAccessToken(Long.valueOf(id));
