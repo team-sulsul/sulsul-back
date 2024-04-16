@@ -28,7 +28,7 @@ public class AuthController {
         return ResponseEntity.ok(oAuthLoginService.login(params));
     }
 
-    @PostMapping("/test")
+    @PostMapping("/login")
     public ResponseEntity<AuthTokensDTO> isLogin(@RequestBody LoginParams params) {
         return ResponseEntity.ok(oAuthLoginService.isLogin(params));
     }
