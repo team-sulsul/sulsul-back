@@ -9,16 +9,10 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class AuthTokens {
+public class AuthTokensDTO {
     private String accessToken;
     private String refreshToken;
-    private String grantType;
-    private Long expiresIn;
     private String message;
 
-
-    public static AuthTokens of(String accessToken, String refreshToken, String grantType, Long expiresIn, String message) {
-        return new AuthTokens(accessToken, refreshToken, grantType, expiresIn, message);
-    }
 }
 

@@ -27,6 +27,7 @@ public class AuthTokensGenerator {
         String subject = memberId.toString();
         String accessToken = jwtTokenProvider.generate(subject, accessTokenExpiredAt);
         String refreshToken = jwtTokenProvider.generate(subject, refreshTokenExpiredAt);
+        String message = "200";
 
         Optional<Member> newMember = memberRepository.findById(memberId);
 
@@ -35,7 +36,29 @@ public class AuthTokensGenerator {
             memberRepository.save(member); // 업데이트된 Member를 저장
             System.out.println("Updated Member: " + member);
         });
-        return AuthTokens.of(accessToken, refreshToken, BEARER_TYPE, ACCESS_TOKEN_EXPIRE_TIME / 1000L);
+        return AuthTokens.of(accessToken, refreshToken, BEARER_TYPE, ACCESS_TOKEN_EXPIRE_TIME / 1000L, message);
+    }
+
+    public String generateAccessToken(Long memberId) {
+        long now = (new Date()).getTime();
+        Date accessTokenExpiredAt = new Date(now + ACCESS_TOKEN_EXPIRE_TIME);
+        String subject = memberId.toString();
+        return jwtTokenProvider.generate(subject, accessTokenExpiredAt);
+    }
+
+    public AuthTokensDTO updateToken(Long memberId) {
+        AuthTokensDTO authTokensDTO = new AuthTokensDTO();
+        long now = (new Date()).getTime();
+        Date accessTokenExpiredAt = new Date(now + ACCESS_TOKEN_EXPIRE_TIME);
+        Date refreshTokenExpiredAt = new Date(now + REFRESH_TOKEN_EXPIRE_TIME);
+        String message = "600";
+
+        String subject = memberId.toString();
+        String accessToken = jwtTokenProvider.generate(subject, accessTokenExpiredAt);
+        String refreshToken = jwtTokenProvider.generate(subject, refreshTokenExpiredAt);
+        authTokensDTO.setAccessToken(accessToken);
+        authTokensDTO.setRefreshToken(refreshToken);
+        return authTokensDTO;
     }
 
     public Long extractMemberId(String accessToken) {

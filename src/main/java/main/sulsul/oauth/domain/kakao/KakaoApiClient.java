@@ -44,15 +44,18 @@ public class KakaoApiClient implements OAuthApiClient {
         String url = authUrl + "/oauth/token";
 
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+//        httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        httpHeaders.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+
         httpHeaders.add("Accept","application/json");
 
         MultiValueMap<String, String> body = params.makeBody();
         body.add("grant_type", GRANT_TYPE);
         body.add("client_id", clientId);
         body.add("client_secret", clientSecret);
-        body.add("redirect_uri", "http://localhost:8080/login/oauth2/code/kakao");
-
+//        body.add("redirect_uri", "http://localhost:8080/login/oauth2/code/kakao"); //로컬
+        body.add("redirect_uri", "http://ec2-52-78-29-203.ap-northeast-2.compute.amazonaws.com:9090/login/oauth2/code/kakao");
+//
         HttpEntity<?> request = new HttpEntity<>(body, httpHeaders);
 
         KakaoTokens response = restTemplate.postForObject(url, request, KakaoTokens.class);

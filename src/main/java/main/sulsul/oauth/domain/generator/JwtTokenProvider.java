@@ -63,15 +63,14 @@ public class JwtTokenProvider {
 
     public static boolean isAccessTokenValid(String accessToken) {
         try {
-            System.out.println("토큰이 정상적입니다.");
             return isTokenExpired(accessToken);
         } catch (ExpiredJwtException e) {
             // AccessToken이 만료된 경우
-            System.out.println("AccessToken이 만료되었습니다.");
+            System.out.println("AccessToken이 만료되었습니다.정상");
             return false;
         } catch (MalformedJwtException | SignatureException e) {
             // 유효하지 않은 형식의 토큰 또는 서명 오류가 발생한 경우
-            System.out.println("유효하지 않은 AccessToken입니다.");
+            System.out.println("유효하지 않은 AccessToken입니다.,정상 유효 X");
             return false;
         } catch (Exception e) {
             // 그 외 예외 처리
