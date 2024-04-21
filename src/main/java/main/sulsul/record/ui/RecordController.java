@@ -41,4 +41,13 @@ public class RecordController {
         recordService.recordDrunkenLevel(memberId, recordDrunkenLevelRequest);
         return CommonResponse.ok(null);
     }
+
+    @PostMapping("/records/bulk")
+    public CommonResponse<Void> recordBulk(HttpServletRequest request, @RequestBody List<RecordBulkRequest> recordBulkRequests) {
+        String accessToken = request.getHeader("Authorization");
+        Long memberId = authTokensGenerator.extractMemberId(accessToken);
+
+        recordService.recordBulk(memberId, recordBulkRequests);
+        return CommonResponse.ok(null);
+    }
 }
