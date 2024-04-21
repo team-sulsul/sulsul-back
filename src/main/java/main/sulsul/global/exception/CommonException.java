@@ -35,7 +35,7 @@ public class CommonException extends RuntimeException {
         return additionalInfos == null;
     }
 
-    public String getCode() {
+    public Integer getCode() {
         return errorCode.getCode();
     }
 

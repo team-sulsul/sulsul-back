@@ -1,9 +1,14 @@
 package main.sulsul.record.ui;
 
+import jakarta.servlet.http.HttpServletRequest;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import main.sulsul.global.dto.CommonResponse;
+import main.sulsul.oauth.domain.generator.AuthTokensGenerator;
 import main.sulsul.record.application.RecordService;
 import main.sulsul.record.dto.RecordBeverageRequest;
+import main.sulsul.record.dto.RecordBulkRequest;
 import main.sulsul.record.dto.RecordDrunkenLevelRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,16 +22,23 @@ import org.springframework.web.bind.annotation.RestController;
 public class RecordController {
 
     private final RecordService recordService;
+    private final AuthTokensGenerator authTokensGenerator;
 
     @PostMapping("/records/step1")
-    public ResponseEntity<Long> recordBeverages(@RequestBody RecordBeverageRequest recordBeverageRequest) {
-        final Long resultId = recordService.recordBeverages(1L, recordBeverageRequest);
-        return ResponseEntity.status(HttpStatus.CREATED).body(resultId);
+    public CommonResponse<Long> recordBeverages(HttpServletRequest request, @RequestBody RecordBeverageRequest recordBeverageRequest) {
+        String accessToken = request.getHeader("Authorization");
+        Long memberId = authTokensGenerator.extractMemberId(accessToken);
+
+        final Long resultId = recordService.recordBeverages(memberId, recordBeverageRequest);
+        return CommonResponse.ok(resultId);
     }
 
     @PostMapping("/records/step2")
-    public ResponseEntity<Void> recordDrunkenLevel(@RequestBody RecordDrunkenLevelRequest recordDrunkenLevelRequest) {
-        recordService.recordDrunkenLevel(1L, recordDrunkenLevelRequest);
-        return ResponseEntity.status(HttpStatus.CREATED).body(null);
+    public CommonResponse<Void> recordDrunkenLevel(HttpServletRequest request, @RequestBody RecordDrunkenLevelRequest recordDrunkenLevelRequest) {
+        String accessToken = request.getHeader("Authorization");
+        Long memberId = authTokensGenerator.extractMemberId(accessToken);
+
+        recordService.recordDrunkenLevel(memberId, recordDrunkenLevelRequest);
+        return CommonResponse.ok(null);
     }
 }

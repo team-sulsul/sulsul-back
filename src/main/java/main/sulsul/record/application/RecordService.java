@@ -27,7 +27,7 @@ public class RecordService {
     /**
      * 유저의 음주 기록을 저장한다.
      *
-     * @param memberId                유저 PK
+     * @param memberId              유저 PK
      * @param recordBeverageRequest 음주 기록 DTO
      */
     @Transactional
@@ -51,7 +51,8 @@ public class RecordService {
 
     @Transactional
     public void recordDrunkenLevel(final Long memberId, final RecordDrunkenLevelRequest recordDrunkenLevelRequest) {
-        final Record foundRecord = recordRepository.findByMemberIdAndRecordedAt(memberId, recordDrunkenLevelRequest.getRecordedAt())
+        final Record foundRecord = recordRepository.findByMemberIdAndRecordedAt(memberId,
+                                                                                recordDrunkenLevelRequest.getRecordedAt())
             .orElseThrow(() -> new RecordException(RecordErrorCode.RECORD_NOT_FOUND));
 
         foundRecord.changeDrunkenLevel(recordDrunkenLevelRequest.getDrunkenLevel());

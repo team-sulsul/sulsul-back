@@ -28,4 +28,8 @@ public class RecordBeverage extends BaseEntity {
         this.beverage = beverage;
         this.drink = drink;
     }
+
+    public void changeDrink(Integer drink) {
+        this.drink = drink;
+    }
 }

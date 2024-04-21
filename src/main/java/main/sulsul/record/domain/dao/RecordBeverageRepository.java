@@ -1,5 +1,7 @@
 package main.sulsul.record.domain.dao;
 
+import java.util.Optional;
+import main.sulsul.beverage.domain.Beverage;
 import main.sulsul.record.domain.RecordBeverage;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -9,4 +11,5 @@ public interface RecordBeverageRepository extends JpaRepository<RecordBeverage, 
 
     List<RecordBeverage> findAllByRecordId(Long recordId);
 
+    Optional<RecordBeverage> findByRecordIdAndBeverage(Long recordId, Beverage beverage);
 }
