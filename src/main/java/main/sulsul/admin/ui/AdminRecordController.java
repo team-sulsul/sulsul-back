@@ -3,8 +3,8 @@ package main.sulsul.admin.ui;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import main.sulsul.admin.application.AdminRecordService;
+import main.sulsul.global.dto.CommonResponse;
 import main.sulsul.record.domain.RecordBeverage;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,8 +22,8 @@ public class AdminRecordController {
 
     @ResponseBody
     @GetMapping("/admin/records/{recordId}")
-    public ResponseEntity<List<RecordBeverage>> getRecordDetail(@PathVariable("recordId") Long recordId) {
+    public CommonResponse<List<RecordBeverage>> getRecordDetail(@PathVariable("recordId") Long recordId) {
         final List<RecordBeverage> result = recordService.getRecordDetail(recordId);
-        return ResponseEntity.ok(result);
+        return CommonResponse.ok(result);
     }
 }
