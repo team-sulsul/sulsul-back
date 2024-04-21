@@ -6,23 +6,23 @@ import main.sulsul.global.exception.CommonException;
 @Getter
 public class CommonResponse<T> {
 
-    private static final String SUCCESS_CODE = "200";
+    private static final Integer SUCCESS_CODE = 200;
     private static final String SUCCESS_MESSAGE = "수행완료";
 
 
-    private String resultCode;
+    private Integer resultCode;
 
     private String resultMessage;
 
     private T resultData;
 
-    public CommonResponse(String resultCode, String resultMessage, T data) {
+    public CommonResponse(Integer resultCode, String resultMessage, T data) {
         this.resultCode = resultCode;
         this.resultMessage = resultMessage;
         this.resultData = data;
     }
 
-    public CommonResponse(String resultCode, String resultMessage) {
+    public CommonResponse(Integer resultCode, String resultMessage) {
         this.resultCode = resultCode;
         this.resultMessage = resultMessage;
     }

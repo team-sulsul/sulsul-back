@@ -48,7 +48,7 @@ public class AdminMemberService {
             .map(record -> new RecordResponse(
                 record.getId(),
                 record.getRecordedAt(),
-                record.getHangoverLevel().getLevel() + ", " + record.getHangoverLevel().getName(),
+                record.getDrunkenLevel().getLevel() + ", " + record.getDrunkenLevel().getName(),
                 record.getCreatedAt()
             ))
             .collect(Collectors.toList());
