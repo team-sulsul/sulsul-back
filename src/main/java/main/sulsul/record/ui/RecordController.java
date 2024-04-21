@@ -1,6 +1,7 @@
 package main.sulsul.record.ui;
 
 import jakarta.servlet.http.HttpServletRequest;
+import java.time.LocalDate;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,8 +13,10 @@ import main.sulsul.record.dto.RecordBulkRequest;
 import main.sulsul.record.dto.RecordDrunkenLevelRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
@@ -23,6 +26,15 @@ public class RecordController {
 
     private final RecordService recordService;
     private final AuthTokensGenerator authTokensGenerator;
+
+    @GetMapping("/records")
+    public CommonResponse<?> getRecords(HttpServletRequest request, @RequestParam("date") String date) {
+        String accessToken = request.getHeader("Authorization");
+        Long memberId = authTokensGenerator.extractMemberId(accessToken);
+
+        recordService.getRecords(memberId, date);
+        return null;
+    }
 
     @PostMapping("/records/step1")
     public CommonResponse<Long> recordBeverages(HttpServletRequest request, @RequestBody RecordBeverageRequest recordBeverageRequest) {

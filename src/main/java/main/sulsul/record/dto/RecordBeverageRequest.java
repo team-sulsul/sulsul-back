@@ -9,5 +9,5 @@ public class RecordBeverageRequest {
 
     private LocalDate recordedAt;
 
-    private List<BeverageRequest> beverages;
+    private List<BeverageInfo> beverages;
 }

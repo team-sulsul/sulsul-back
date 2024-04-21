@@ -4,7 +4,7 @@ import lombok.Getter;
 import main.sulsul.beverage.domain.Beverage;
 
 @Getter
-public class BeverageRequest {
+public class BeverageInfo {
 
     private int quantity;
 
