@@ -1,14 +1,18 @@
 package main.sulsul.record.application;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import main.sulsul.record.domain.DrunkenLevel;
 import main.sulsul.record.domain.Record;
 import main.sulsul.record.domain.RecordBeverage;
 import main.sulsul.record.domain.dao.RecordBeverageRepository;
 import main.sulsul.record.domain.dao.RecordRepository;
+import main.sulsul.record.dto.BeverageRequest;
 import main.sulsul.record.dto.RecordBeverageRequest;
+import main.sulsul.record.dto.RecordBulkRequest;
 import main.sulsul.record.dto.RecordDrunkenLevelRequest;
 import main.sulsul.record.exception.RecordErrorCode;
 import main.sulsul.record.exception.RecordException;
@@ -56,5 +60,32 @@ public class RecordService {
             .orElseThrow(() -> new RecordException(RecordErrorCode.RECORD_NOT_FOUND));
 
         foundRecord.changeDrunkenLevel(recordDrunkenLevelRequest.getDrunkenLevel());
+    }
+
+    @Transactional
+    public void recordBulk(Long memberId, List<RecordBulkRequest> recordBulkRequests) {
+        for (RecordBulkRequest recordRequest : recordBulkRequests) {
+            final Record record = recordRepository.findByMemberIdAndRecordedAt(memberId, recordRequest.getRecordedAt())
+                .orElseGet(() -> recordRepository.save(new Record(
+                    memberId,
+                    recordRequest.getDrunkenLevel(),
+                    recordRequest.getRecordedAt())
+                ));
+            record.changeDrunkenLevel(recordRequest.getDrunkenLevel());
+
+            List<RecordBeverage> recordBeverages = new ArrayList<>();
+            for (BeverageRequest beverage : recordRequest.getBeverages()) {
+                final Optional<RecordBeverage> findRecordBeverage = recordBeverageRepository.findByRecordIdAndBeverage(
+                    record.getId(), beverage.getBeverage());
+                if (findRecordBeverage.isPresent()) {
+                    final RecordBeverage recordBeverage = findRecordBeverage.get();
+                    recordBeverage.changeDrink(beverage.getQuantity());
+                } else {
+                    recordBeverages.add(
+                        new RecordBeverage(record.getId(), beverage.getBeverage(), beverage.getQuantity()));
+                }
+            }
+            recordBeverageRepository.saveAll(recordBeverages);
+        }
     }
 }
