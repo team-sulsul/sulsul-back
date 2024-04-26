@@ -1,7 +1,6 @@
 package main.sulsul.record.application;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -29,17 +28,9 @@ public class RecordService {
     private final RecordRepository recordRepository;
     private final RecordBeverageRepository recordBeverageRepository;
 
-    public List<CalendarResponse> getRecords(Long memberId, String date) {
-        final LocalDate parsedDate = LocalDate.parse(date + "-01");
-        LocalDate startDate = parsedDate.withDayOfMonth(1);
-        LocalDate endDate = parsedDate.withDayOfMonth(parsedDate.lengthOfMonth());
-
-        final List<RecordBeverage> result = recordBeverageRepository.findAllByMemberIdAndRecordedAtBetween(
-            memberId, startDate, endDate);
-
-        return null;
+    public List<CalendarResponse> getRecords(Long memberId) {
+        return recordRepository.getRecordBulk(memberId);
     }
-
 
     /**
      * 유저의 음주 기록을 저장한다.

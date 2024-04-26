@@ -1,5 +1,6 @@
 package main.sulsul.global.config;
 
+import com.querydsl.jpa.JPQLTemplates;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +15,6 @@ public class QueryDslConfig {
 
     @Bean
     public JPAQueryFactory queryFactory() {
-        return new JPAQueryFactory(em);
+        return new JPAQueryFactory(JPQLTemplates.DEFAULT, em);
     }
 }
