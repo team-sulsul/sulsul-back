@@ -10,10 +10,11 @@ import main.sulsul.record.domain.Record;
 import main.sulsul.record.domain.RecordBeverage;
 import main.sulsul.record.domain.dao.RecordBeverageRepository;
 import main.sulsul.record.domain.dao.RecordRepository;
-import main.sulsul.record.dto.BeverageRequest;
+import main.sulsul.record.dto.BeverageInfo;
 import main.sulsul.record.dto.RecordBeverageRequest;
 import main.sulsul.record.dto.RecordBulkRequest;
 import main.sulsul.record.dto.RecordDrunkenLevelRequest;
+import main.sulsul.record.dto.response.CalendarResponse;
 import main.sulsul.record.exception.RecordErrorCode;
 import main.sulsul.record.exception.RecordException;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,9 @@ public class RecordService {
     private final RecordRepository recordRepository;
     private final RecordBeverageRepository recordBeverageRepository;
 
+    public List<CalendarResponse> getRecords(Long memberId) {
+        return recordRepository.getRecordBulk(memberId);
+    }
 
     /**
      * 유저의 음주 기록을 저장한다.
@@ -74,7 +78,7 @@ public class RecordService {
             record.changeDrunkenLevel(recordRequest.getDrunkenLevel());
 
             List<RecordBeverage> recordBeverages = new ArrayList<>();
-            for (BeverageRequest beverage : recordRequest.getBeverages()) {
+            for (BeverageInfo beverage : recordRequest.getBeverages()) {
                 final Optional<RecordBeverage> findRecordBeverage = recordBeverageRepository.findByRecordIdAndBeverage(
                     record.getId(), beverage.getBeverage());
                 if (findRecordBeverage.isPresent()) {

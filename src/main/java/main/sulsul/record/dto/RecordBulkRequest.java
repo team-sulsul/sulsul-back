@@ -12,5 +12,5 @@ public class RecordBulkRequest {
 
     private DrunkenLevel drunkenLevel;
 
-    List<BeverageRequest> beverages;
+    List<BeverageInfo> beverages;
 }
