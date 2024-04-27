@@ -58,7 +58,7 @@ public class OAuthLoginService {
     private Long newMember(OAuthInfoResponse oAuthInfoResponse) {
         Member member = Member.builder()
                 .email(oAuthInfoResponse.getEmail())
-                .username(oAuthInfoResponse.getNickname())
+                .username(oAuthInfoResponse.getEmail())
                 .role(Role.USER)
                 .password(passwordEncoder().encode(SIMPLE_PASSWORD))
                 .build();
