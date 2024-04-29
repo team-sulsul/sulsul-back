@@ -27,6 +27,8 @@ import static main.sulsul.oauth.domain.generator.JwtTokenProvider.isTokenExpired
 @RequiredArgsConstructor
 @Slf4j
 public class OAuthLoginService {
+
+    public static final String SIMPLE_PASSWORD = "1111";
     private final MemberRepository memberRepository;
     private final AuthTokensGenerator authTokensGenerator;
     private final RequestOAuthInfoService requestOAuthInfoService;
@@ -58,7 +60,7 @@ public class OAuthLoginService {
                 .email(oAuthInfoResponse.getEmail())
                 .username(oAuthInfoResponse.getNickname())
                 .role(Role.USER)
-                .password(passwordEncoder().encode("1111"))
+                .password(passwordEncoder().encode(SIMPLE_PASSWORD))
                 .build();
         return memberRepository.save(member).getId();
     }
