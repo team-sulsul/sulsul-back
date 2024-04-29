@@ -43,7 +43,7 @@ public class OAuthLoginService {
     }
 
     public AuthTokens login(OAuthLoginParams params) {
-        log.info("login");
+        log.info("loginTry");
         return getAuthTokens(params);
     }
 
