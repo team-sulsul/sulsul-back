@@ -1,7 +1,10 @@
 package main.sulsul.oauth.application;
 
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
+import java.util.Date;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import main.sulsul.member.domain.Member;
@@ -19,14 +22,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-
-import static main.sulsul.oauth.domain.generator.JwtTokenProvider.isTokenExpired;
-
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class OAuthLoginService {
+
+    public static final String SIMPLE_PASSWORD = "1111";
     private final MemberRepository memberRepository;
     private final AuthTokensGenerator authTokensGenerator;
     private final RequestOAuthInfoService requestOAuthInfoService;
@@ -58,7 +59,7 @@ public class OAuthLoginService {
                 .email(oAuthInfoResponse.getEmail())
                 .username(oAuthInfoResponse.getNickname())
                 .role(Role.USER)
-                .password(passwordEncoder().encode("1111"))
+                .password(passwordEncoder().encode(SIMPLE_PASSWORD))
                 .build();
         return memberRepository.save(member).getId();
     }
