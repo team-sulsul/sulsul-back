@@ -1,7 +1,10 @@
 package main.sulsul.oauth.application;
 
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
+import java.util.Date;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import main.sulsul.member.domain.Member;
@@ -18,10 +21,6 @@ import main.sulsul.oauth.domain.oauth.RequestOAuthInfoService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.Date;
-
-import static main.sulsul.oauth.domain.generator.JwtTokenProvider.isTokenExpired;
 
 @Service
 @RequiredArgsConstructor
