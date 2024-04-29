@@ -9,9 +9,9 @@ import org.springframework.util.MultiValueMap;
 
 @Getter
 @NoArgsConstructor
-public class KakaoLoginParams implements OAuthLoginParams {
+public class LoginParams implements OAuthLoginParams {
     private String accessToken;
-
+    private String refreshToken;
 
     @Override
     public OAuthProvider oAuthProvider() {
@@ -21,12 +21,8 @@ public class KakaoLoginParams implements OAuthLoginParams {
     @Override
     public MultiValueMap<String, String> makeBody() {
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
-        body.add("code", accessToken);
+        body.add("accessToken", accessToken);
+        body.add("refreshToken", refreshToken);
         return body;
-    }
-
-    @Override
-    public String getAccessToken() {
-        return accessToken;
     }
 }

@@ -21,13 +21,17 @@ public class Record extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "varchar(255)")
-    private HangoverLevel hangoverLevel;
+    private DrunkenLevel drunkenLevel;
 
     private LocalDate recordedAt;
 
-    public Record(Long memberId, HangoverLevel hangoverLevel, LocalDate recordedAt) {
+    public Record(Long memberId, DrunkenLevel drunkenLevel, LocalDate recordedAt) {
         this.memberId = memberId;
-        this.hangoverLevel = hangoverLevel;
+        this.drunkenLevel = drunkenLevel;
         this.recordedAt = recordedAt;
+    }
+
+    public void changeDrunkenLevel(DrunkenLevel drunkenLevel) {
+        this.drunkenLevel = drunkenLevel;
     }
 }
