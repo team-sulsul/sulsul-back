@@ -5,12 +5,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import main.sulsul.beverage.domain.Beverage;
 import main.sulsul.record.domain.DrunkenLevel;
 import main.sulsul.record.domain.Record;
 import main.sulsul.record.domain.RecordBeverage;
 import main.sulsul.record.domain.dao.RecordBeverageRepository;
 import main.sulsul.record.domain.dao.RecordRepository;
 import main.sulsul.record.dto.BeverageInfo;
+import main.sulsul.record.dto.RecordBeverageModifyRequest;
 import main.sulsul.record.dto.RecordBeverageRequest;
 import main.sulsul.record.dto.RecordBulkRequest;
 import main.sulsul.record.dto.RecordDrunkenLevelRequest;
@@ -20,6 +23,7 @@ import main.sulsul.record.exception.RecordException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 @Service
@@ -55,6 +59,45 @@ public class RecordService {
         recordBeverageRepository.saveAll(newRecordBeverages);
 
         return newRecord.getId();
+    }
+
+
+    /**
+     * 음주 기록 수정
+     *
+     * @param memberId      memberId
+     * @param modifyRequest 수정 DTO
+     */
+    @Transactional
+    public void modifyBeverages(Long memberId, RecordBeverageModifyRequest modifyRequest) {
+        final Optional<Record> optional = recordRepository.findByMemberIdAndRecordedAt(memberId, modifyRequest.getRecordedAt());
+
+        if (optional.isEmpty()) {
+            throw new RecordException(RecordErrorCode.RECORD_NOT_FOUND);
+        }
+
+        final Record findRecord = optional.get();
+        final Long recordId = findRecord.getId();
+        final List<RecordBeverage> recordList = recordBeverageRepository.findAllByRecordId(recordId);
+
+        final List<BeverageInfo> beverageInfos = modifyRequest.getBeverages();
+
+        for (BeverageInfo beverageInfo : beverageInfos) {
+            recordList.stream()
+                .filter(r -> r.getBeverage() == beverageInfo.getBeverage())
+                .findFirst()
+                .ifPresentOrElse(recordBeverage -> recordBeverage.changeDrink(beverageInfo.getQuantity()),
+                                 () -> {
+                                     recordBeverageRepository.save(new RecordBeverage(
+                                         recordId,
+                                         beverageInfo.getBeverage(),
+                                         beverageInfo.getQuantity())
+                                     );
+                });
+        }
+
+        final List<Beverage> deleteBeverages = modifyRequest.getDeleteBeverages();
+        recordBeverageRepository.deleteAllByRecordIdAndBeverageIn(recordId, deleteBeverages);
     }
 
     @Transactional

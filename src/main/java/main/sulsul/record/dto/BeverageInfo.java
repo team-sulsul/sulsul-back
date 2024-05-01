@@ -2,8 +2,10 @@ package main.sulsul.record.dto;
 
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import main.sulsul.beverage.domain.Beverage;
 
+@NoArgsConstructor
 @Getter
 public class BeverageInfo {
 

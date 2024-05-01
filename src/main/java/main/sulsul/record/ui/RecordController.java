@@ -7,12 +7,14 @@ import lombok.extern.slf4j.Slf4j;
 import main.sulsul.global.dto.CommonResponse;
 import main.sulsul.oauth.domain.generator.AuthTokensGenerator;
 import main.sulsul.record.application.RecordService;
+import main.sulsul.record.dto.RecordBeverageModifyRequest;
 import main.sulsul.record.dto.RecordBeverageRequest;
 import main.sulsul.record.dto.RecordBulkRequest;
 import main.sulsul.record.dto.RecordDrunkenLevelRequest;
 import main.sulsul.record.dto.response.CalendarResponse;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -39,6 +41,16 @@ public class RecordController {
 
         final Long resultId = recordService.recordBeverages(memberId, recordBeverageRequest);
         return CommonResponse.ok(resultId);
+    }
+
+    @PutMapping("/records/step1")
+    public CommonResponse<Void> modifyBeverages(HttpServletRequest request,
+                                                @RequestBody RecordBeverageModifyRequest modifyRequest) {
+        final String accessToken = request.getHeader("Authorization");
+        final Long memberId = authTokensGenerator.extractMemberId(accessToken);
+
+        recordService.modifyBeverages(memberId, modifyRequest);
+        return CommonResponse.ok(null);
     }
 
     @PostMapping("/records/step2")
