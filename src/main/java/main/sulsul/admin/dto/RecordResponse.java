@@ -7,18 +7,18 @@ import lombok.Getter;
 @Getter
 public class RecordResponse {
 
-    private Long recordId;
+    private final Long recordId;
 
-    private LocalDate recordedAt;
+    private final LocalDate recordedAt;
 
-    private String hangoverLevel;
+    private final String drunkenLevel;
 
-    private LocalDateTime createdAt;
+    private final LocalDateTime createdAt;
 
-    public RecordResponse(Long recordId, LocalDate recordedAt, String hangoverLevel, LocalDateTime createdAt) {
+    public RecordResponse(Long recordId, LocalDate recordedAt, String drunkenLevel, LocalDateTime createdAt) {
         this.recordId = recordId;
         this.recordedAt = recordedAt;
-        this.hangoverLevel = hangoverLevel;
+        this.drunkenLevel = drunkenLevel;
         this.createdAt = createdAt;
     }
 }
