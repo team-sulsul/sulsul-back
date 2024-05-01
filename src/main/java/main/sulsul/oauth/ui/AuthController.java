@@ -1,6 +1,7 @@
 package main.sulsul.oauth.ui;
 
 import lombok.RequiredArgsConstructor;
+import main.sulsul.global.dto.CommonResponse;
 import main.sulsul.oauth.application.OAuthLoginService;
 import main.sulsul.oauth.domain.generator.AuthTokens;
 import main.sulsul.oauth.domain.generator.AuthTokensDTO;
@@ -24,12 +25,12 @@ public class AuthController {
     }
 
     @PostMapping("/kakao")
-    public ResponseEntity<AuthTokens> loginKakao(@RequestBody KakaoLoginParams params) {
-        return ResponseEntity.ok(oAuthLoginService.login(params));
+    public CommonResponse<AuthTokens> loginKakao(@RequestBody KakaoLoginParams params) {
+        return CommonResponse.ok(oAuthLoginService.login(params));
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthTokensDTO> isLogin(@RequestBody LoginParams params) {
-        return ResponseEntity.ok(oAuthLoginService.isLogin(params));
+    public CommonResponse<AuthTokensDTO> isLogin(@RequestBody LoginParams params) {
+        return CommonResponse.ok(oAuthLoginService.isLogin(params));
     }
 }
