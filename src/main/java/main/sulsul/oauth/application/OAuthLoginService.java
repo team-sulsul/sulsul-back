@@ -5,6 +5,8 @@ import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import java.util.Date;
+import java.util.Optional;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import main.sulsul.member.domain.Member;
@@ -21,6 +23,7 @@ import main.sulsul.oauth.domain.oauth.RequestOAuthInfoService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
 
 @Service
 @RequiredArgsConstructor
@@ -42,25 +45,56 @@ public class OAuthLoginService {
         return getAccessToken(params);
     }
 
+    public static String randomName() {
+        String apiUrl = "https://nickname.hwanmoo.kr/?format=text&max_length=5";
+
+        // WebClient 객체 생성
+        WebClient webClient = WebClient.create();
+
+        // API 호출 및 응답 처리 (동기적)
+        String response = webClient.get()
+                .uri(apiUrl)
+                .retrieve()
+                .bodyToMono(String.class)
+                .block();
+
+        return response;
+    }
     public AuthTokens login(OAuthLoginParams params) {
         log.info("loginTry");
         return getAuthTokens(params);
     }
 
+    public String withdraw(Long id) {
+        Optional<Member> newMember = memberRepository.findById(id);
+        newMember.ifPresent(member -> {
+            member.setUse_yn("N");
+            memberRepository.save(member); // 업데이트된 Member를 저장
+        });
+
+        return "delete";
+    }
+
 
 
     private Long findOrCreateMember(OAuthInfoResponse oAuthInfoResponse) {
-        return memberRepository.findByEmail(oAuthInfoResponse.getEmail())
+        return memberRepository.findByUsername(oAuthInfoResponse.getEmail())
                 .map(Member::getId)
                 .orElseGet(() -> newMember(oAuthInfoResponse));
     }
 
+    private Optional<Long> findMember(OAuthInfoResponse oAuthInfoResponse) {
+        return memberRepository.findByUsername(oAuthInfoResponse.getEmail())
+                .map(Member::getId);
+    }
+
     private Long newMember(OAuthInfoResponse oAuthInfoResponse) {
         Member member = Member.builder()
-                .email(oAuthInfoResponse.getEmail())
+                .nickname(randomName())
                 .username(oAuthInfoResponse.getEmail())
                 .role(Role.USER)
                 .password(passwordEncoder().encode(SIMPLE_PASSWORD))
+                .use_yn("Y")
                 .build();
         return memberRepository.save(member).getId();
     }
@@ -113,6 +147,8 @@ public class OAuthLoginService {
         Long memberId = findOrCreateMember(oAuthInfoResponse);
         return authTokensGenerator.generate(memberId);
     }
+
+
 
 
     private String getUpdateAuthTokens(String id) {
