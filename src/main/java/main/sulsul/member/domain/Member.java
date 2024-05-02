@@ -19,9 +19,11 @@ public class Member extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String email;
+    private String nickname;
 
     private String username;
+
+    private String use_yn;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role", length = 10)
@@ -36,13 +38,18 @@ public class Member extends BaseEntity {
         this.refreshToken = refreshToken;
     }
 
+    public void setUse_yn(String use_yn) {
+        this.use_yn = use_yn;
+    }
+
     @Builder
-    public Member(Long id, String email, String username, Role role, String refreshToken, String password) {
+    public Member(Long id, String nickname, String username, Role role, String refreshToken, String password, String use_yn) {
         this.id = id;
-        this.email = email;
+        this.nickname = nickname;
         this.username = username;
         this.role = role;
         this.refreshToken = refreshToken;
         this.password = password;
+        this.use_yn = use_yn;
     }
 }
