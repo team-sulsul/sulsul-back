@@ -28,7 +28,7 @@ public class MemberService {
             memberDto.setRefreshToken(member.getRefreshToken());
             memberDto.setId(memberId);
             memberDto.setRole(member.getRole());
-            memberDto.setEmail(member.getNickname());
+            memberDto.setNickname(member.getNickname());
             memberDto.setUsername(member.getUsername());
             return memberDto;
         } catch (IllegalArgumentException e) {
