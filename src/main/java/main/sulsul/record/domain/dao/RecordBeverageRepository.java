@@ -15,4 +15,6 @@ public interface RecordBeverageRepository extends JpaRepository<RecordBeverage, 
     Optional<RecordBeverage> findByRecordIdAndBeverage(Long recordId, Beverage beverage);
 
     void deleteAllByRecordIdAndBeverageIn(Long recordId, List<Beverage> beverage);
+
+    void deleteAllByRecordId(Long recordId);
 }

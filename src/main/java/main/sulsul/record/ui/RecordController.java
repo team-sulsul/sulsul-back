@@ -2,21 +2,16 @@ package main.sulsul.record.ui;
 
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
+
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import main.sulsul.global.dto.CommonResponse;
 import main.sulsul.oauth.domain.generator.AuthTokensGenerator;
 import main.sulsul.record.application.RecordService;
-import main.sulsul.record.dto.RecordBeverageModifyRequest;
-import main.sulsul.record.dto.RecordBeverageRequest;
-import main.sulsul.record.dto.RecordBulkRequest;
-import main.sulsul.record.dto.RecordDrunkenLevelRequest;
+import main.sulsul.record.dto.*;
 import main.sulsul.record.dto.response.CalendarResponse;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -54,11 +49,20 @@ public class RecordController {
     }
 
     @PostMapping("/records/step2")
-    public CommonResponse<Void> recordDrunkenLevel(HttpServletRequest request, @RequestBody RecordDrunkenLevelRequest recordDrunkenLevelRequest) {
+    public CommonResponse<Void> recordDrunkenLevel(HttpServletRequest request, @Valid @RequestBody RecordDrunkenLevelRequest recordDrunkenLevelRequest) {
         String accessToken = request.getHeader("Authorization");
         Long memberId = authTokensGenerator.extractMemberId(accessToken);
 
         recordService.recordDrunkenLevel(memberId, recordDrunkenLevelRequest);
+        return CommonResponse.ok(null);
+    }
+
+    @DeleteMapping("/records")
+    public CommonResponse<Void> deleteRecord(HttpServletRequest request, @RequestBody RecordDeleteRequest recordDeleteRequest) {
+        String accessToken = request.getHeader("Authorization");
+        Long memberId = authTokensGenerator.extractMemberId(accessToken);
+
+        recordService.deleteRecord(memberId, recordDeleteRequest);
         return CommonResponse.ok(null);
     }
 
