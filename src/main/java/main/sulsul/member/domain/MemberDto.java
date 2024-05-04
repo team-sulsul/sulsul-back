@@ -15,7 +15,7 @@ import lombok.Setter;
 public class MemberDto {
     private Long id;
 
-    private String email;
+    private String nickname;
 
     private String username;
 
