@@ -12,11 +12,7 @@ import main.sulsul.record.domain.Record;
 import main.sulsul.record.domain.RecordBeverage;
 import main.sulsul.record.domain.dao.RecordBeverageRepository;
 import main.sulsul.record.domain.dao.RecordRepository;
-import main.sulsul.record.dto.BeverageInfo;
-import main.sulsul.record.dto.RecordBeverageModifyRequest;
-import main.sulsul.record.dto.RecordBeverageRequest;
-import main.sulsul.record.dto.RecordBulkRequest;
-import main.sulsul.record.dto.RecordDrunkenLevelRequest;
+import main.sulsul.record.dto.*;
 import main.sulsul.record.dto.response.CalendarResponse;
 import main.sulsul.record.exception.RecordErrorCode;
 import main.sulsul.record.exception.RecordException;
@@ -134,5 +130,19 @@ public class RecordService {
             }
             recordBeverageRepository.saveAll(recordBeverages);
         }
+    }
+
+    @Transactional
+    public void deleteRecord(Long memberId, RecordDeleteRequest recordDeleteRequest) {
+        final Optional<Record> optional = recordRepository.findByMemberIdAndRecordedAt(memberId, recordDeleteRequest.getRecordedAt());
+
+        if (optional.isEmpty()) {
+            throw new RecordException(RecordErrorCode.RECORD_NOT_FOUND);
+        }
+
+        final Record findRecord = optional.get();
+
+        recordBeverageRepository.deleteAllByRecordId(findRecord.getId());
+        recordRepository.delete(findRecord);
     }
 }
