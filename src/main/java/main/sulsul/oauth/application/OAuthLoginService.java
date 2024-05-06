@@ -120,8 +120,8 @@ public class OAuthLoginService {
             }
             authTokensDTO.setMessage("600");
             log.info("param : {}", params);
-            String id = jwtTokenProvider.extractSubject(params.getAccessToken());
-            System.out.println("id = " + id);
+            String id = jwtTokenProvider.extractSubject(params.getRefreshToken());
+            log.info("추출된 refreshToken id: {}", id);
             String updateAccessToken = getUpdateAuthTokens(id);
             authTokensDTO.setAccessToken(updateAccessToken);
             return authTokensDTO;
@@ -142,17 +142,14 @@ public class OAuthLoginService {
     private String getAccessToken(OAuthLoginParams params) {
         return requestOAuthInfoService.getAccessToken(params);
     }
+
     private AuthTokens getAuthTokens(OAuthLoginParams params) {
         OAuthInfoResponse oAuthInfoResponse = requestOAuthInfoService.request(params);
         Long memberId = findOrCreateMember(oAuthInfoResponse);
         return authTokensGenerator.generate(memberId);
     }
 
-
-
-
     private String getUpdateAuthTokens(String id) {
-        String accessToken = authTokensGenerator.generateAccessToken(Long.valueOf(id));
-        return accessToken;
+        return authTokensGenerator.generateAccessToken(Long.valueOf(id));
     }
 }
