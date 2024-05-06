@@ -1,5 +1,7 @@
 package main.sulsul.record.domain.dao.impl;
 
+import static com.querydsl.core.group.GroupBy.groupBy;
+import static com.querydsl.core.group.GroupBy.list;
 import static main.sulsul.record.domain.QRecord.record;
 import static main.sulsul.record.domain.QRecordBeverage.recordBeverage;
 
@@ -11,9 +13,6 @@ import main.sulsul.record.dto.QBeverageInfo;
 import main.sulsul.record.dto.response.CalendarResponse;
 import main.sulsul.record.dto.response.QCalendarResponse;
 import org.springframework.stereotype.Repository;
-
-import static com.querydsl.core.group.GroupBy.groupBy;
-import static com.querydsl.core.group.GroupBy.list;
 
 @RequiredArgsConstructor
 @Repository

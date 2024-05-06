@@ -1,6 +1,7 @@
 package main.sulsul.beverage.domain;
 
 import lombok.Getter;
+import main.sulsul.beverage.dto.BeverageInfo;
 
 @Getter
 public enum Beverage {
@@ -25,5 +26,12 @@ public enum Beverage {
         this.korean = korean;
         this.capacity = capacity;
         this.drinkPerBottle = drinkPerBottle;
+    }
+
+    public BeverageInfo calculateBottle(Integer drink) {
+        if (drinkPerBottle == null) {
+            return new BeverageInfo(korean, null, drink, drink);
+        }
+        return new BeverageInfo(korean, drink / drinkPerBottle, drink % drinkPerBottle, drink);
     }
 }
