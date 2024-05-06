@@ -30,7 +30,7 @@ public enum Beverage {
 
     public BeverageInfo calculateBottle(Integer drink) {
         if (drinkPerBottle == null) {
-            return new BeverageInfo(korean, null, drink, drink);
+            return new BeverageInfo(korean, 0, drink, drink);
         }
         return new BeverageInfo(korean, drink / drinkPerBottle, drink % drinkPerBottle, drink);
     }
