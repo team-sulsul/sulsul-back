@@ -114,17 +114,19 @@ public class OAuthLoginService {
             authTokensDTO.setRefreshToken("-");
             return authTokensDTO;
         } catch (ExpiredJwtException e) {
-            if (isTokenExpired(refreshToken)) {
+            try {
+                isTokenExpired(refreshToken);
                 authTokensDTO.setMessage("601");
                 return authTokensDTO;
+            }catch (ExpiredJwtException e2) {
+                authTokensDTO.setMessage("600");
+                log.info("param : {}", params);
+                String id = jwtTokenProvider.extractSubject(params.getRefreshToken());
+                log.info("추출된 refreshToken id: {}", id);
+                String updateAccessToken = getUpdateAuthTokens(id);
+                authTokensDTO.setAccessToken(updateAccessToken);
+                return authTokensDTO;
             }
-            authTokensDTO.setMessage("600");
-            log.info("param : {}", params);
-            String id = jwtTokenProvider.extractSubject(params.getRefreshToken());
-            log.info("추출된 refreshToken id: {}", id);
-            String updateAccessToken = getUpdateAuthTokens(id);
-            authTokensDTO.setAccessToken(updateAccessToken);
-            return authTokensDTO;
         }
     }
 
