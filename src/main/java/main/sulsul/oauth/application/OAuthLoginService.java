@@ -1,155 +1,102 @@
 package main.sulsul.oauth.application;
 
-import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.io.Decoders;
-import java.util.Date;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.security.SignatureException;
 import java.util.Optional;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import main.sulsul.member.domain.Member;
 import main.sulsul.member.domain.Role;
 import main.sulsul.member.domain.dao.MemberRepository;
-import main.sulsul.oauth.domain.generator.AuthTokens;
-import main.sulsul.oauth.domain.generator.AuthTokensDTO;
-import main.sulsul.oauth.domain.generator.AuthTokensGenerator;
-import main.sulsul.oauth.domain.generator.JwtTokenProvider;
 import main.sulsul.oauth.domain.kakao.LoginParams;
 import main.sulsul.oauth.domain.oauth.OAuthInfoResponse;
 import main.sulsul.oauth.domain.oauth.OAuthLoginParams;
 import main.sulsul.oauth.domain.oauth.RequestOAuthInfoService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import main.sulsul.oauth.domain.token.JwtTokenProvider;
+import main.sulsul.oauth.domain.token.JwtTokensGenerator;
+import main.sulsul.oauth.domain.token.TokenValidator;
+import main.sulsul.oauth.dto.AuthTokensResponse;
+import main.sulsul.oauth.exception.OAuthErrorCode;
+import main.sulsul.oauth.exception.OAuthException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.transaction.annotation.Transactional;
 
-@Service
-@RequiredArgsConstructor
 @Slf4j
+@RequiredArgsConstructor
+@Service
 public class OAuthLoginService {
 
-    public static final String SIMPLE_PASSWORD = "1111";
+    private static final String SIMPLE_PASSWORD = "1111";
     private final MemberRepository memberRepository;
-    private final AuthTokensGenerator authTokensGenerator;
+    private final JwtTokensGenerator jwtTokensGenerator;
     private final RequestOAuthInfoService requestOAuthInfoService;
     private final JwtTokenProvider jwtTokenProvider;
-    public final PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    private static byte[] decodeKey = Decoders.BASE64.decode("testSecretKey20230327testSecretKey20230327testSecretKey202303271221122121212122121212112212121221212112211212121212121221");
+    private final PasswordEncoder passwordEncoder;
+    private final NicknameGenerator nicknameGenerator;
+    private final TokenValidator tokenValidator;
 
     public String accessTokenGen(OAuthLoginParams params) {
         return getAccessToken(params);
     }
 
-    public static String randomName() {
-        String apiUrl = "https://nickname.hwanmoo.kr/?format=text&max_length=5";
-
-        // WebClient 객체 생성
-        WebClient webClient = WebClient.create();
-
-        // API 호출 및 응답 처리 (동기적)
-        String response = webClient.get()
-                .uri(apiUrl)
-                .retrieve()
-                .bodyToMono(String.class)
-                .block();
-
-        return response;
-    }
-    public AuthTokens login(OAuthLoginParams params) {
-        log.info("loginTry");
-        return getAuthTokens(params);
+    @Transactional
+    public AuthTokensResponse registerKakao(OAuthLoginParams params) {
+        OAuthInfoResponse oAuthInfoResponse = requestOAuthInfoService.request(params);
+        Long memberId = findOrCreateMember(oAuthInfoResponse);
+        return jwtTokensGenerator.generate(memberId);
     }
 
+    @Transactional
     public String withdraw(Long id) {
         Optional<Member> newMember = memberRepository.findById(id);
         newMember.ifPresent(member -> {
-            member.setUse_yn("N");
-            memberRepository.save(member); // 업데이트된 Member를 저장
+            member.setUseYn("N");
         });
 
         return "delete";
     }
 
-
-
     private Long findOrCreateMember(OAuthInfoResponse oAuthInfoResponse) {
         return memberRepository.findByUsername(oAuthInfoResponse.getEmail())
-                .map(Member::getId)
-                .orElseGet(() -> newMember(oAuthInfoResponse));
+            .map(Member::getId)
+            .orElseGet(() -> createNewMember(oAuthInfoResponse));
     }
 
-    private Optional<Long> findMember(OAuthInfoResponse oAuthInfoResponse) {
-        return memberRepository.findByUsername(oAuthInfoResponse.getEmail())
-                .map(Member::getId);
-    }
-
-    private Long newMember(OAuthInfoResponse oAuthInfoResponse) {
+    private Long createNewMember(OAuthInfoResponse oAuthInfoResponse) {
         Member member = Member.builder()
-                .nickname(randomName())
-                .username(oAuthInfoResponse.getEmail())
-                .role(Role.USER)
-                .password(passwordEncoder().encode(SIMPLE_PASSWORD))
-                .use_yn("Y")
-                .build();
+            .nickname(nicknameGenerator.getNickname())
+            .username(oAuthInfoResponse.getEmail())
+            .role(Role.USER)
+            .password(passwordEncoder.encode(SIMPLE_PASSWORD))
+            .useYn("Y")
+            .build();
         return memberRepository.save(member).getId();
     }
 
-    public AuthTokensDTO isLogin(LoginParams params) {
-        AuthTokensDTO authTokensDTO = new AuthTokensDTO();
+    /**
+     * accessToken, refreshToken 토큰 만료 여부 체크 - accessToken이 이상 없으면 200 응답 - accessToken이 만료되면 refreshToken으로 유효성 검증 -
+     * refreshToken이 유효하면 새로운 accessToken 과 함께 400 코드 반환 - refreshToken 도 유효하지 않으면 401 코드 반환. 이때는 클라에서 kakao로 재로그인 해야함
+     *
+     * @param params
+     * @return
+     */
+    public void login(LoginParams params) {
         String accessToken = params.getAccessToken();
-        String refreshToken = params.getRefreshToken();
-        return isAccessTokenValid(accessToken, refreshToken, authTokensDTO, params);
-    }
 
-    public AuthTokensDTO isAccessTokenValid(String accessToken, String refreshToken, AuthTokensDTO authTokensDTO, LoginParams params) {
         try {
-            isTokenExpired(accessToken);
-            authTokensDTO.setMessage("200");
-            authTokensDTO.setAccessToken("-");
-            authTokensDTO.setRefreshToken("-");
-            return authTokensDTO;
+            jwtTokenProvider.validate(accessToken);
         } catch (ExpiredJwtException e) {
-            if (isTokenExpired(refreshToken)) {
-                authTokensDTO.setMessage("601");
-                return authTokensDTO;
-            }
-            authTokensDTO.setMessage("600");
-            log.info("param : {}", params);
-            String id = jwtTokenProvider.extractSubject(params.getRefreshToken());
-            log.info("추출된 refreshToken id: {}", id);
-            String updateAccessToken = getUpdateAuthTokens(id);
-            authTokensDTO.setAccessToken(updateAccessToken);
-            return authTokensDTO;
+            log.info("액세스 토큰 만료. 리프레쉬 토큰 검증 실행");
+            tokenValidator.handleExpiredAccessToken(e);
+        } catch (SignatureException | MalformedJwtException e) {
+            throw new OAuthException(OAuthErrorCode.TOKEN_INVALID);
         }
-    }
-
-    public static boolean isTokenExpired(String token) {
-        Date expirationDate = getExpirationDateFromToken(token);
-        return expirationDate.before(new Date());
-    }
-
-    // 토큰에서 만료 시간 가져오기
-    private static Date getExpirationDateFromToken(String token) {
-        Claims claims = Jwts.parserBuilder().setSigningKey(decodeKey).build().parseClaimsJws(token).getBody();
-        return claims.getExpiration();
     }
 
     private String getAccessToken(OAuthLoginParams params) {
         return requestOAuthInfoService.getAccessToken(params);
-    }
-
-    private AuthTokens getAuthTokens(OAuthLoginParams params) {
-        OAuthInfoResponse oAuthInfoResponse = requestOAuthInfoService.request(params);
-        Long memberId = findOrCreateMember(oAuthInfoResponse);
-        return authTokensGenerator.generate(memberId);
-    }
-
-    private String getUpdateAuthTokens(String id) {
-        return authTokensGenerator.generateAccessToken(Long.valueOf(id));
     }
 }

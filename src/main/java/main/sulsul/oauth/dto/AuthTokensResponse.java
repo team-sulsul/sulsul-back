@@ -1,4 +1,4 @@
-package main.sulsul.oauth.domain.generator;
+package main.sulsul.oauth.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,10 +9,11 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class AuthTokensDTO {
+public class AuthTokensResponse {
     private String accessToken;
-    private String refreshToken;
-    private String message;
 
+    public static AuthTokensResponse of(String accessToken) {
+        return new AuthTokensResponse(accessToken);
+    }
 }
 

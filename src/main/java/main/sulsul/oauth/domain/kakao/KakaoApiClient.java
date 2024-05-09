@@ -32,6 +32,9 @@ public class KakaoApiClient implements OAuthApiClient {
     @Value("${spring.oauth.kakao.secret}")
     private String clientSecret;
 
+    @Value("${spring.oauth.kakao.redirect-uri}")
+    private String redirectUri;
+
     private final RestTemplate restTemplate;
 
     @Override
@@ -53,9 +56,8 @@ public class KakaoApiClient implements OAuthApiClient {
         body.add("grant_type", GRANT_TYPE);
         body.add("client_id", clientId);
         body.add("client_secret", clientSecret);
-//        body.add("redirect_uri", "http://localhost:8080/login/oauth2/code/kakao"); //로컬
-        body.add("redirect_uri", "http://ec2-52-78-29-203.ap-northeast-2.compute.amazonaws.com:9090/login/oauth2/code/kakao");
-//
+        body.add("redirect_uri", redirectUri); //로컬
+
         HttpEntity<?> request = new HttpEntity<>(body, httpHeaders);
 
         KakaoTokens response = restTemplate.postForObject(url, request, KakaoTokens.class);
