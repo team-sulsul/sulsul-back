@@ -22,7 +22,7 @@ public class MemberService {
     public MemberDto findByAccessToken(HttpServletRequest request) {
         MemberDto memberDto = new MemberDto();
         try {
-            String accessToken = request.getHeader("Authorization");
+            String accessToken = request.getHeader("Authorization").substring(7);
             Long memberId = authTokensGenerator.extractMemberId(accessToken);
             Member member = memberRepository.findById(memberId).get();
             memberDto.setRefreshToken(member.getRefreshToken());

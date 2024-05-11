@@ -101,8 +101,8 @@ public class OAuthLoginService {
 
     public AuthTokensDTO isLogin(LoginParams params) {
         AuthTokensDTO authTokensDTO = new AuthTokensDTO();
-        String accessToken = params.getAccessToken();
-        String refreshToken = params.getRefreshToken();
+        String accessToken = params.getAccessToken().substring(7);
+        String refreshToken = params.getRefreshToken().substring(7);
         return isAccessTokenValid(accessToken, refreshToken, authTokensDTO, params);
     }
 
