@@ -19,6 +19,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import main.sulsul.beverage.domain.Beverage;
 import main.sulsul.beverage.dto.BeverageInfo;
+import main.sulsul.member.domain.Member;
+import main.sulsul.member.domain.dao.MemberRepository;
 import main.sulsul.record.domain.DrunkenLevel;
 import main.sulsul.statistics.dao.StatisticsRepository;
 import main.sulsul.statistics.dto.RecordStats;
@@ -35,9 +37,14 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class StatisticsService {
 
+    private final MemberRepository memberRepository;
     private final StatisticsRepository statisticsRepository;
 
     public TotalStatisticsResponse getStatistics(Long memberId, LocalDate date) {
+
+        final Member member = memberRepository.findById(memberId)
+            .orElseThrow();
+
         // 총 3개월 기간 구하기
         final LocalDate startDate = date.minusMonths(2).withDayOfMonth(1);
         final LocalDate endDate = date.plusMonths(1).withDayOfMonth(1);
@@ -55,7 +62,7 @@ public class StatisticsService {
         // section3
         final Section3 section3 = getSection3(findRecords, thisMonth);
 
-        return new TotalStatisticsResponse(section1, section2, section3);
+        return new TotalStatisticsResponse(member.getNickname(), section1, section2, section3);
     }
 
     /**
