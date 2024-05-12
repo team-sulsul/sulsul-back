@@ -7,7 +7,6 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import main.sulsul.global.dto.CommonResponse;
-import main.sulsul.oauth.domain.token.JwtTokensGenerator;
 import main.sulsul.oauth.domain.token.TokenValidator;
 import main.sulsul.record.application.RecordService;
 import main.sulsul.record.dto.*;
@@ -17,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RequiredArgsConstructor
 @RestController
+@RequestMapping("/api")
 public class RecordController {
 
     private final RecordService recordService;
