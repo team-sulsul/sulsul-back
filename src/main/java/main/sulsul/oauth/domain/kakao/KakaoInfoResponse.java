@@ -18,8 +18,6 @@ public class KakaoInfoResponse implements OAuthInfoResponse {
     static class KakaoAccount {
         private KakaoProfile profile;
         private String email;
-
-
     }
 
     @Getter

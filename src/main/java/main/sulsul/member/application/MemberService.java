@@ -6,8 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import main.sulsul.member.domain.Member;
 import main.sulsul.member.domain.MemberDto;
 import main.sulsul.member.domain.dao.MemberRepository;
-import main.sulsul.oauth.domain.generator.AuthTokensGenerator;
-import org.springframework.http.ResponseEntity;
+import main.sulsul.oauth.domain.token.JwtTokensGenerator;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
@@ -16,14 +15,14 @@ import org.springframework.stereotype.Service;
 public class MemberService {
 
     private final MemberRepository memberRepository;
-    private final AuthTokensGenerator authTokensGenerator;
+    private final JwtTokensGenerator jwtTokensGenerator;
 
 
     public MemberDto findByAccessToken(HttpServletRequest request) {
         MemberDto memberDto = new MemberDto();
         try {
             String accessToken = request.getHeader("Authorization");
-            Long memberId = authTokensGenerator.extractMemberId(accessToken);
+            Long memberId = jwtTokensGenerator.extractMemberId(accessToken);
             Member member = memberRepository.findById(memberId).get();
             memberDto.setRefreshToken(member.getRefreshToken());
             memberDto.setId(memberId);

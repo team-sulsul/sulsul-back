@@ -4,7 +4,8 @@ import main.sulsul.global.exception.ErrorCode;
 import org.springframework.http.HttpStatus;
 
 public enum OAuthErrorCode implements ErrorCode {
-    TOKEN_EXPIRED(HttpStatus.BAD_REQUEST, 401, "만료된 토큰"),
+    ACCESS_TOKEN_RENEWAL(HttpStatus.BAD_REQUEST, 400, "액세스 토큰 갱신"),
+    REFRESH_TOKEN_EXPIRED(HttpStatus.BAD_REQUEST, 401, "리프레쉬 토큰 만료\n재로그인 필요"),
     TOKEN_INVALID(HttpStatus.BAD_REQUEST, 402, "유효하지 않은 토큰");
 
     private final HttpStatus httpStatus;

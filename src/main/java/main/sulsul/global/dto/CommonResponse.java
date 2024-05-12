@@ -32,6 +32,6 @@ public class CommonResponse<T> {
     }
 
     public static <T> CommonResponse<T> businessError(CommonException exception) {
-        return new CommonResponse<>(exception.getCode(), exception.getMessage());
+        return (CommonResponse<T>) new CommonResponse<>(exception.getCode(), exception.getMessage(), exception.getAdditionalInfos());
     }
 }

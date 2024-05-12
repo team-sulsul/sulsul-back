@@ -1,15 +1,18 @@
 package main.sulsul.global.config;
 
 import lombok.extern.slf4j.Slf4j;
+import main.sulsul.global.filter.TokenFilter;
 import main.sulsul.global.security.CustomAccessDeniedHandler;
 import main.sulsul.global.security.FormAuthenticationProvider;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -17,8 +20,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Slf4j
+@Order(1)
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -42,6 +47,7 @@ public class SecurityConfig {
     }
 
     @Bean
+    @Order(1)
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
             .authenticationProvider(authenticationProvider())
@@ -70,6 +76,18 @@ public class SecurityConfig {
             .exceptionHandling(configure -> {
                 configure.accessDeniedHandler(new CustomAccessDeniedHandler("/admin/error"));
             })
+            .build();
+    }
+
+    @Bean
+    public SecurityFilterChain clientFilterChain(HttpSecurity http) throws Exception {
+        return http
+            .csrf(AbstractHttpConfigurer::disable)
+            .securityMatcher("/**")
+            .authorizeHttpRequests(auth -> {
+                auth.requestMatchers("/api/auth/**", "/error", "/**").permitAll();
+            })
+            .addFilterBefore(new TokenFilter(), UsernamePasswordAuthenticationFilter.class)
             .build();
     }
 
