@@ -7,7 +7,7 @@ jwt:
   secretKey: testSecretKey20230327testSecretKey20230327testSecretKey202303271221122121212122121212112212121221212112211212121212121221
 
   access:
-    expiration: 360000  # 1시간
+    expiration: 3600000  # 1시간
     header: Authorization
 
   refresh:
