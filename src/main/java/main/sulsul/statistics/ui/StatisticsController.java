@@ -4,16 +4,17 @@ import jakarta.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
 import lombok.RequiredArgsConstructor;
 import main.sulsul.global.dto.CommonResponse;
-import main.sulsul.oauth.domain.token.JwtTokensGenerator;
 import main.sulsul.oauth.domain.token.TokenValidator;
 import main.sulsul.statistics.application.StatisticsService;
 import main.sulsul.statistics.dto.TotalStatisticsResponse;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
+@RequestMapping("/api")
 public class StatisticsController {
 
     private final TokenValidator tokenValidator;
