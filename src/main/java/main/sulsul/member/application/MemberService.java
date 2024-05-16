@@ -9,6 +9,7 @@ import main.sulsul.member.domain.dao.MemberRepository;
 import main.sulsul.oauth.domain.token.JwtTokensGenerator;
 import org.springframework.stereotype.Service;
 
+
 @RequiredArgsConstructor
 @Service
 @Slf4j
@@ -21,7 +22,7 @@ public class MemberService {
     public MemberDto findByAccessToken(HttpServletRequest request) {
         MemberDto memberDto = new MemberDto();
         try {
-            String accessToken = request.getHeader("Authorization");
+            String accessToken = request.getHeader("Authorization").substring(7);
             Long memberId = jwtTokensGenerator.extractMemberId(accessToken);
             Member member = memberRepository.findById(memberId).get();
             memberDto.setRefreshToken(member.getRefreshToken());
