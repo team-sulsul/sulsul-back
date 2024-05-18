@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import main.sulsul.global.dto.CommonResponse;
 import main.sulsul.member.application.MemberService;
 import main.sulsul.member.domain.MemberDto;
+import main.sulsul.member.domain.MypageInfo;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,5 +22,10 @@ public class MemberController {
     @GetMapping
     public CommonResponse<MemberDto> findByAccessToken(HttpServletRequest request) {
         return CommonResponse.ok(memberService.findByAccessToken(request));
+    }
+
+    @GetMapping("/myPageInfo")
+    public CommonResponse<MypageInfo> myPageInfo(HttpServletRequest request) {
+        return CommonResponse.ok(memberService.myPageInfo(request));
     }
 }
