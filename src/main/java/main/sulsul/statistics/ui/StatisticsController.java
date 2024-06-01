@@ -22,8 +22,7 @@ public class StatisticsController {
 
     @GetMapping("/statistics")
     public CommonResponse<TotalStatisticsResponse> statistics(HttpServletRequest request, @RequestParam(value = "startDate", defaultValue = "#{T(java.time.LocalDate).now()}") LocalDate startDate) {
-        final String accessToken = request.getHeader("Authorization");
-        final Long memberId = tokenValidator.extractMemberId(accessToken);
+        final Long memberId = tokenValidator.extractMemberId(request);
 
         final TotalStatisticsResponse result = statisticsService.getStatistics(memberId, startDate);
         return CommonResponse.ok(result);

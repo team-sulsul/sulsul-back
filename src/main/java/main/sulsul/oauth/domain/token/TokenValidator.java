@@ -4,6 +4,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.security.SignatureException;
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
@@ -11,18 +12,33 @@ import main.sulsul.member.domain.Member;
 import main.sulsul.member.domain.dao.MemberRepository;
 import main.sulsul.oauth.exception.OAuthErrorCode;
 import main.sulsul.oauth.exception.OAuthException;
+import org.codehaus.groovy.syntax.TokenException;
 import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
 @Component
 public class TokenValidator {
 
+    private static final String PREFIX = "Bearer ";
     private final MemberRepository memberRepository;
     private final JwtTokenProvider jwtTokenProvider;
 
-    public Long extractMemberId(String accessToken) {
+    public Long extractMemberId(HttpServletRequest request) {
         try {
-            return Long.valueOf(jwtTokenProvider.extractSubject(accessToken));
+            final String authorization = request.getHeader("Authorization");
+
+            if (authorization == null) {
+                throw new OAuthException(OAuthErrorCode.TOKEN_NOT_EXIST);
+            }
+
+            final String prefix = authorization.substring(0, 7);
+            if (!prefix.startsWith(PREFIX)) {
+                throw new MalformedJwtException("유효하지 않은 prefix");
+            }
+
+            final String token = authorization.substring(7);
+
+            return Long.valueOf(jwtTokenProvider.extractSubject(token));
         } catch (ExpiredJwtException e) {
             handleExpiredAccessToken(e);
         } catch (SignatureException | MalformedJwtException e) {
