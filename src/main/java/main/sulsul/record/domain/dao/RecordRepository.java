@@ -13,4 +13,6 @@ public interface RecordRepository extends JpaRepository<Record, Long>, RecordCus
     Page<Record> findAllByMemberId(final Long memberId, Pageable pageable);
 
     Optional<Record> findByMemberIdAndRecordedAt(final Long memberId, final LocalDate recordedAt);
+
+    List<Record> findAllByMemberId(Long memberId);
 }
