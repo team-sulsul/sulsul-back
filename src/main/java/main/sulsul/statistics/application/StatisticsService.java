@@ -12,6 +12,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -51,7 +52,7 @@ public class StatisticsService {
         final List<RecordStats> findRecords = statisticsRepository.findAllByMemberIdAndRecordedAtBetween(memberId,
                                                                                                          startDate,
                                                                                                          endDate);
-        final LocalDate thisMonth = LocalDate.now().withDayOfMonth(1);
+        final LocalDate thisMonth = date.withDayOfMonth(1);
 
         // section1
         final Section1 section1 = getSection1(findRecords, thisMonth);
@@ -169,7 +170,8 @@ public class StatisticsService {
             return null;
         }
 
-        Map<DrunkenLevel, Long> drunkenLevelCounts = section3Data.values().stream()
+        Map<DrunkenLevel, Long> drunkenLevelCounts = section3Data.values()
+            .stream()
             .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
 
         Integer drunkenLevel1Count = drunkenLevelCounts.getOrDefault(DrunkenLevel.DRUNKEN_LEVEL1, 0L).intValue();
@@ -185,6 +187,17 @@ public class StatisticsService {
             drunkenLevel4Count,
             drunkenLevel5Count
         );
+
+        Optional<Entry<DrunkenLevel, Long>> maxEntry = drunkenLevelCounts.entrySet()
+            .stream()
+            .max(Map.Entry.comparingByValue());
+
+        if (maxEntry.isPresent()) {
+            DrunkenLevel maxDrunkenLevel = maxEntry.get().getKey();
+            section3.setMaxDrunkenStatus(maxDrunkenLevel.getStatus());
+        } else {
+            section3.setMaxDrunkenStatus(DrunkenLevel.DRUNKEN_LEVEL_DEFAULT.getStatus());
+        }
         return section3;
     }
 }

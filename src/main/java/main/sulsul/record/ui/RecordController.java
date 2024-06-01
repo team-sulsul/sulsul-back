@@ -24,16 +24,14 @@ public class RecordController {
 
     @GetMapping("/records")
     public CommonResponse<List<CalendarResponse>> getRecords(HttpServletRequest request) {
-        String accessToken = request.getHeader("Authorization");
-        Long memberId = tokenValidator.extractMemberId(accessToken);
+        Long memberId = tokenValidator.extractMemberId(request);
         final List<CalendarResponse> records = recordService.getRecords(memberId);
         return CommonResponse.ok(records);
     }
 
     @PostMapping("/records/step1")
     public CommonResponse<Long> recordBeverages(HttpServletRequest request, @RequestBody RecordBeverageRequest recordBeverageRequest) {
-        String accessToken = request.getHeader("Authorization");
-        Long memberId = tokenValidator.extractMemberId(accessToken);
+        Long memberId = tokenValidator.extractMemberId(request);
 
         final Long resultId = recordService.recordBeverages(memberId, recordBeverageRequest);
         return CommonResponse.ok(resultId);
@@ -42,8 +40,7 @@ public class RecordController {
     @PutMapping("/records/step1")
     public CommonResponse<Void> modifyBeverages(HttpServletRequest request,
                                                 @RequestBody RecordBeverageModifyRequest modifyRequest) {
-        final String accessToken = request.getHeader("Authorization");
-        final Long memberId = tokenValidator.extractMemberId(accessToken);
+        final Long memberId = tokenValidator.extractMemberId(request);
 
         recordService.modifyBeverages(memberId, modifyRequest);
         return CommonResponse.ok(null);
@@ -51,8 +48,7 @@ public class RecordController {
 
     @PostMapping("/records/step2")
     public CommonResponse<Void> recordDrunkenLevel(HttpServletRequest request, @Valid @RequestBody RecordDrunkenLevelRequest recordDrunkenLevelRequest) {
-        String accessToken = request.getHeader("Authorization");
-        Long memberId = tokenValidator.extractMemberId(accessToken);
+        Long memberId = tokenValidator.extractMemberId(request);
 
         recordService.recordDrunkenLevel(memberId, recordDrunkenLevelRequest);
         return CommonResponse.ok(null);
@@ -60,8 +56,7 @@ public class RecordController {
 
     @DeleteMapping("/records")
     public CommonResponse<Void> deleteRecord(HttpServletRequest request, @RequestBody RecordDeleteRequest recordDeleteRequest) {
-        String accessToken = request.getHeader("Authorization");
-        Long memberId = tokenValidator.extractMemberId(accessToken);
+        Long memberId = tokenValidator.extractMemberId(request);
 
         recordService.deleteRecord(memberId, recordDeleteRequest);
         return CommonResponse.ok(null);
@@ -69,8 +64,7 @@ public class RecordController {
 
     @PostMapping("/records/bulk")
     public CommonResponse<Void> recordBulk(HttpServletRequest request, @RequestBody List<RecordBulkRequest> recordBulkRequests) {
-        String accessToken = request.getHeader("Authorization");
-        Long memberId = tokenValidator.extractMemberId(accessToken);
+        Long memberId = tokenValidator.extractMemberId(request);
 
         recordService.recordBulk(memberId, recordBulkRequests);
         return CommonResponse.ok(null);
