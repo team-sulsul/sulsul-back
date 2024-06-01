@@ -2,12 +2,12 @@ package main.sulsul.statistics.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import main.sulsul.record.domain.DrunkenLevel;
 
 @NoArgsConstructor
 @Getter
 public class Section3 {
 
+    private String maxDrunkenStatus;
     private Integer drunkenLevel1Count;
     private Integer drunkenLevel2Count;
     private Integer drunkenLevel3Count;
@@ -21,5 +21,9 @@ public class Section3 {
         this.drunkenLevel3Count = drunkenLevel3Count;
         this.drunkenLevel4Count = drunkenLevel4Count;
         this.drunkenLevel5Count = drunkenLevel5Count;
+    }
+
+    public void setMaxDrunkenStatus(String maxDrunkenStatus) {
+        this.maxDrunkenStatus = maxDrunkenStatus;
     }
 }
