@@ -1,4 +1,4 @@
-package main.sulsul.common.config;
+package main.sulsul.global.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
