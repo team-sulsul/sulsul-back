@@ -49,16 +49,6 @@ public class OAuthLoginService {
         return jwtTokensGenerator.generate(memberId);
     }
 
-    @Transactional
-    public String withdraw(Long id) {
-        Optional<Member> newMember = memberRepository.findById(id);
-        newMember.ifPresent(member -> {
-            member.setUseYn("N");
-        });
-
-        return "delete";
-    }
-
     private Long findOrCreateMember(OAuthInfoResponse oAuthInfoResponse) {
         return memberRepository.findByUsername(oAuthInfoResponse.getEmail())
             .map(Member::getId)

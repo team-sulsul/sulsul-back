@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api")
-public class RecordController {
+public class RecordController implements RecordControllerDocs {
 
     private final RecordService recordService;
     private final TokenValidator tokenValidator;

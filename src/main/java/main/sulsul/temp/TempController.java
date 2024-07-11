@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/temp")
-public class TempController {
+public class TempController implements TempControllerDocs {
 
     private final JwtTokensGenerator jwtTokensGenerator;
 

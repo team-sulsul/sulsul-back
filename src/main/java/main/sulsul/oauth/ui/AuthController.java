@@ -45,14 +45,4 @@ public class AuthController {
         oAuthLoginService.login(params);
         return CommonResponse.ok(null);
     }
-
-    /**
-     * 회원 탈퇴
-     * @param id
-     * @return
-     */
-    @PostMapping("/withdraw/{id}")
-    public CommonResponse<String> withdraw(@PathVariable(name = "id") Long id) {
-        return CommonResponse.ok(oAuthLoginService.withdraw(id));
-    }
 }

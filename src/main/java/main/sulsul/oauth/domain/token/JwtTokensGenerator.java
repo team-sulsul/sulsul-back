@@ -9,6 +9,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import main.sulsul.member.domain.Member;
@@ -48,8 +50,9 @@ public class JwtTokensGenerator {
         return jwtTokenProvider.generateAccessToken(subject);
     }
 
-    public Long extractMemberId(String accessToken) {
+    public Long extractMemberId(HttpServletRequest request) {
         try {
+            String accessToken = request.getHeader("Authorization").substring(7);
             return Long.valueOf(jwtTokenProvider.extractSubject(accessToken));
         } catch (ExpiredJwtException e) {
             tokenValidator.handleExpiredAccessToken(e);
