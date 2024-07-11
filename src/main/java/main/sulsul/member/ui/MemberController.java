@@ -5,8 +5,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import main.sulsul.global.dto.CommonResponse;
 import main.sulsul.member.application.MemberService;
-import main.sulsul.member.domain.MemberDto;
-import main.sulsul.member.domain.MypageInfo;
+import main.sulsul.member.dto.MemberDto;
+import main.sulsul.member.dto.MypageInfoResponse;
 import main.sulsul.oauth.domain.token.JwtTokensGenerator;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,8 +25,8 @@ public class MemberController implements MemberControllerDocs {
         return CommonResponse.ok(memberService.findByMemberId(memberId));
     }
 
-    @GetMapping("/myPageInfo")
-    public CommonResponse<MypageInfo> myPageInfo(HttpServletRequest request) {
+    @GetMapping("/mypage")
+    public CommonResponse<MypageInfoResponse> myPageInfo(HttpServletRequest request) {
         Long memberId = jwtTokensGenerator.extractMemberId(request);
         return CommonResponse.ok(memberService.myPageInfo(memberId));
     }

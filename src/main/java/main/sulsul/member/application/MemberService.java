@@ -2,18 +2,24 @@ package main.sulsul.member.application;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import main.sulsul.beverage.domain.Beverage;
+import main.sulsul.beverage.dto.BeverageInfo;
 import main.sulsul.member.domain.Member;
-import main.sulsul.member.domain.MemberDto;
-import main.sulsul.member.domain.MypageInfo;
 import main.sulsul.member.domain.dao.MemberRepository;
-import main.sulsul.record.domain.Record;
-import main.sulsul.record.domain.RecordBeverage;
+import main.sulsul.member.dto.MemberDto;
+import main.sulsul.member.dto.MypageInfoResponse;
 import main.sulsul.record.domain.dao.RecordBeverageRepository;
 import main.sulsul.record.domain.dao.RecordRepository;
+import main.sulsul.statistics.dao.StatisticsRepository;
+import main.sulsul.statistics.dto.RecordStats;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
+
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.summingInt;
 
 
 @RequiredArgsConstructor
@@ -22,6 +28,7 @@ import java.util.List;
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    private final StatisticsRepository statisticsRepository;
     private final RecordBeverageRepository recordBeverageRepository;
     private final RecordRepository recordRepository;
 
@@ -40,23 +47,31 @@ public class MemberService {
 
     }
 
-    public MypageInfo myPageInfo(Long memberId) {
+    public MypageInfoResponse myPageInfo(Long memberId) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow();
-        List<Record> records = recordRepository.findAllByMemberId(memberId);
-        Integer total = 0;
-        for (Record record : records) {
-            Long id = record.getId();
-            List<RecordBeverage> recordBeverages = recordBeverageRepository.findAllByRecordId(id);
-            for (RecordBeverage r : recordBeverages) {
-                Integer drink = r.getDrink();
-                total += drink;
-            }
+        List<RecordStats> findRecords = statisticsRepository.findAllByMemberIdAndRecordedAtBetween(memberId, null, null);
+
+        final Map<Beverage, Integer> groupingData = findRecords.stream()
+                .collect(groupingBy(RecordStats::getBeverage, summingInt(RecordStats::getDrink)));
+
+        if (groupingData.isEmpty()) {
+            return new MypageInfoResponse(member.getNickname(), null, null);
         }
-        MypageInfo myPageInfo = new MypageInfo();
-        myPageInfo.setNickname(member.getNickname());
-        myPageInfo.setDrink(total);
-        return myPageInfo;
+
+        int totalBottle = 0;
+        int totalDrink = 0;
+
+        for (Map.Entry<Beverage, Integer> beverageIntegerEntry : groupingData.entrySet()) {
+            final Beverage beverage = beverageIntegerEntry.getKey();
+            final Integer beverageDrink = beverageIntegerEntry.getValue();
+            
+            final BeverageInfo beverageInfo = beverage.calculateBottle(beverageDrink);
+            totalBottle += beverageInfo.getBottle();
+            totalDrink += beverageInfo.getDrink();
+        }
+        
+        return new MypageInfoResponse(member.getNickname(), totalBottle, totalDrink);
     }
 
     @Transactional

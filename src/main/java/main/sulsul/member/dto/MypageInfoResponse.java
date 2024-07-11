@@ -1,17 +1,17 @@
-package main.sulsul.member.domain;
+package main.sulsul.member.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class MypageInfo {
+public class MypageInfoResponse {
 
     private String nickname;
 
-    private Integer drink;
+    private Integer totalBottle;
+
+    private Integer totalDrink;
 }

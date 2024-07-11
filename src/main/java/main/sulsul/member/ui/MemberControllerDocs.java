@@ -4,8 +4,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import main.sulsul.global.dto.CommonResponse;
-import main.sulsul.member.domain.MemberDto;
-import main.sulsul.member.domain.MypageInfo;
+import main.sulsul.member.dto.MemberDto;
+import main.sulsul.member.dto.MypageInfoResponse;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -16,7 +16,7 @@ public interface MemberControllerDocs {
     CommonResponse<MemberDto> findByAccessToken(HttpServletRequest request);
 
     @GetMapping("/myPageInfo")
-    CommonResponse<MypageInfo> myPageInfo(HttpServletRequest request);
+    CommonResponse<MypageInfoResponse> myPageInfo(HttpServletRequest request);
 
     /**
      * 회원 탈퇴
