@@ -1,10 +1,8 @@
 package main.sulsul.oauth.application;
 
 import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.security.SignatureException;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import main.sulsul.member.domain.Member;
@@ -57,7 +55,7 @@ public class OAuthLoginService {
 
     private Long createNewMember(OAuthInfoResponse oAuthInfoResponse) {
         Member member = Member.builder()
-            .nickname(nicknameGenerator.getNickname())
+            .nickname(nicknameGenerator.generate())
             .username(oAuthInfoResponse.getEmail())
             .role(Role.USER)
             .password(passwordEncoder.encode(SIMPLE_PASSWORD))
