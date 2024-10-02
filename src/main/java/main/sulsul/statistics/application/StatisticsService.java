@@ -174,11 +174,11 @@ public class StatisticsService {
             .stream()
             .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
 
-        Integer drunkenLevel1Count = drunkenLevelCounts.getOrDefault(DrunkenLevel.DRUNKEN_LEVEL1, 0L).intValue();
-        Integer drunkenLevel2Count = drunkenLevelCounts.getOrDefault(DrunkenLevel.DRUNKEN_LEVEL2, 0L).intValue();
-        Integer drunkenLevel3Count = drunkenLevelCounts.getOrDefault(DrunkenLevel.DRUNKEN_LEVEL3, 0L).intValue();
-        Integer drunkenLevel4Count = drunkenLevelCounts.getOrDefault(DrunkenLevel.DRUNKEN_LEVEL4, 0L).intValue();
-        Integer drunkenLevel5Count = drunkenLevelCounts.getOrDefault(DrunkenLevel.DRUNKEN_LEVEL5, 0L).intValue();
+        Integer drunkenLevel1Count = drunkenLevelCounts.getOrDefault(DrunkenLevel.DRUNKEN_LEVEL_1, 0L).intValue();
+        Integer drunkenLevel2Count = drunkenLevelCounts.getOrDefault(DrunkenLevel.DRUNKEN_LEVEL_2, 0L).intValue();
+        Integer drunkenLevel3Count = drunkenLevelCounts.getOrDefault(DrunkenLevel.DRUNKEN_LEVEL_3, 0L).intValue();
+        Integer drunkenLevel4Count = drunkenLevelCounts.getOrDefault(DrunkenLevel.DRUNKEN_LEVEL_4, 0L).intValue();
+        Integer drunkenLevel5Count = drunkenLevelCounts.getOrDefault(DrunkenLevel.DRUNKEN_LEVEL_5, 0L).intValue();
 
         final Section3 section3 = new Section3(
             drunkenLevel1Count,
