@@ -78,6 +78,6 @@ public class MemberService {
     public void withdraw(Long memberId) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow();
-        member.setUseYn("N");
+        member.withdraw();
     }
 }

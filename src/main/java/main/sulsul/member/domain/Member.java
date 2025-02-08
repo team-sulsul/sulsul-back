@@ -38,8 +38,8 @@ public class Member extends BaseEntity {
         this.refreshToken = refreshToken;
     }
 
-    public void setUseYn(String useYn) {
-        this.useYn = useYn;
+    public void withdraw() {
+        this.useYn = "N";
     }
 
     @Builder
