@@ -7,7 +7,6 @@ import main.sulsul.oauth.domain.kakao.KakaoLoginParams;
 import main.sulsul.oauth.domain.kakao.LoginParams;
 import main.sulsul.oauth.dto.AuthTokensResponse;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,13 +25,13 @@ public class AuthController {
     }
 
     /**
-     * 카카오 회원가입 및 토큰을 발급해준다.
+     * 회원가입 및 토큰을 발급해준다.
      * @param params 카카오 액세스 토큰
      * @return
      */
     @PostMapping("/kakao")
-    public CommonResponse<AuthTokensResponse> registerKakao(@RequestBody KakaoLoginParams params) {
-        return CommonResponse.ok(oAuthLoginService.registerKakao(params));
+    public CommonResponse<AuthTokensResponse> register(@RequestBody KakaoLoginParams params) {
+        return CommonResponse.ok(oAuthLoginService.registerMember(params));
     }
 
     /**

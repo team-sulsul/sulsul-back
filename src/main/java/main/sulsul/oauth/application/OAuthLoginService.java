@@ -41,19 +41,20 @@ public class OAuthLoginService {
     }
 
     @Transactional
-    public AuthTokensResponse registerKakao(OAuthLoginParams params) {
+    public AuthTokensResponse registerMember(OAuthLoginParams params) {
         OAuthInfoResponse oAuthInfoResponse = requestOAuthInfoService.request(params);
-        Long memberId = findOrCreateMember(oAuthInfoResponse);
-        return jwtTokensGenerator.generate(memberId);
+        Member member = findOrCreateMember(oAuthInfoResponse);
+        return jwtTokensGenerator.generate(member.getId());
     }
 
-    private Long findOrCreateMember(OAuthInfoResponse oAuthInfoResponse) {
-        return memberRepository.findByUsername(oAuthInfoResponse.getEmail())
-            .map(Member::getId)
+    private Member findOrCreateMember(OAuthInfoResponse oAuthInfoResponse) {
+        return memberRepository.findAllByUsername(oAuthInfoResponse.getEmail()).stream()
+            .filter(Member::isLive)
+            .findFirst()
             .orElseGet(() -> createNewMember(oAuthInfoResponse));
     }
 
-    private Long createNewMember(OAuthInfoResponse oAuthInfoResponse) {
+    private Member createNewMember(OAuthInfoResponse oAuthInfoResponse) {
         Member member = Member.builder()
             .nickname(nicknameGenerator.generate())
             .username(oAuthInfoResponse.getEmail())
@@ -61,7 +62,7 @@ public class OAuthLoginService {
             .password(passwordEncoder.encode(SIMPLE_PASSWORD))
             .useYn("Y")
             .build();
-        return memberRepository.save(member).getId();
+        return memberRepository.save(member);
     }
 
     /**

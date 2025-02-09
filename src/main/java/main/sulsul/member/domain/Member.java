@@ -42,6 +42,10 @@ public class Member extends BaseEntity {
         this.useYn = "N";
     }
 
+    public boolean isLive() {
+        return useYn.equals("Y");
+    }
+
     @Builder
     public Member(Long id, String nickname, String username, Role role, String refreshToken, String password, String useYn) {
         this.id = id;

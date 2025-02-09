@@ -23,8 +23,9 @@ import static java.util.stream.Collectors.summingInt;
 
 
 @RequiredArgsConstructor
-@Service
 @Slf4j
+@Transactional(readOnly = true)
+@Service
 public class MemberService {
 
     private final MemberRepository memberRepository;
