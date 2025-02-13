@@ -57,7 +57,7 @@ public class MemberService {
                 .collect(groupingBy(RecordStats::getBeverage, summingInt(RecordStats::getDrink)));
 
         if (groupingData.isEmpty()) {
-            return new MypageInfoResponse(member.getNickname(), null, null);
+            return new MypageInfoResponse(member.getNickname(), 0, 0);
         }
 
         int totalBottle = 0;
